@@ -1,12 +1,13 @@
-import customtkinter as ctk
 from tkinter import *
+from tkinter.ttk import *
+import customtkinter as ctk
 from PIL import Image
 from mysql.connector import connect
 import psycopg2
 import mysql.connector
 import pandas.io.sql as sqlio
-
 from tkinter import PhotoImage
+# icone = PhotoImage (file= '/run/media/eduardo/800694AB0694A426/Documents and Settings/Busolin/Documents/Escola/TCC/TCC/Desktop/FRONTEND/icon.png')
 #from PIL import Image, ImageTk
 janela = ctk.CTk()
 class BackEnd():
@@ -37,7 +38,7 @@ class BackEnd():
 
         self.conexao_mysql()
         self.cursor.execute("""SELECT * FROM Minerva_Login WHERE(usuário =? AND senha=?)""",
-                            (self.username_login, self.password_login))
+                            (self.username, self.password_login))
         self.verifica_dados = self.cursor.fetchone()
         self.limpa_entry_login()
 
@@ -57,11 +58,11 @@ class Application(BackEnd):
         def tela(self):
             janela.geometry("700x400")
             janela.title("Sistema de Login")
-            janela.iconbitmap('icon.ico')
+            # janela.iconphoto(FALSE, icone)
             janela.resizable(False, False)
 
         def telaLogin(self):
-            img = ctk.CTkImage(Image.open("foto2.png"), size=(150, 300))
+            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(150, 300))
 
             label_img = ctk.CTkLabel(master=janela, text='', image=img)
             label_img.place(x=20, y=100)
@@ -95,6 +96,5 @@ class Application(BackEnd):
         def limpa_entry_login(self):
             self.username_entry.delete(0, END)
             self.senha_entry.delete(0, END)
-
 
 Application()

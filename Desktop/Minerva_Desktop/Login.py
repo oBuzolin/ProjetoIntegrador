@@ -1,13 +1,13 @@
 import customtkinter as ctk
-from tkinter import *
-from PIL import Image
+from _tkinter import *
+from PIL import *
 from mysql.connector import connect
-from PyQt5.QtGui import *
+import PyQt5
 #import psycopg2
 import mysql.connector
 #import pandas.io.sql as sqlio
 
-from tkinter import PhotoImage
+from tkinter import RIGHT, PhotoImage
 #from PIL import Image, ImageTk
 janela = ctk.CTk()
 class BackEnd():
@@ -58,11 +58,11 @@ class Application(BackEnd):
         def tela(self):
             janela.geometry("700x400")
             janela.title("Sistema de Login")
-            janela.iconbitmap('icon.ico')
+            # janela.iconbitmap('icon.ico')
             janela.resizable(False, False)
 
         def telaLogin(self):
-            img = ctk.CTkImage(Image.open("foto2.png"), size=(300, 300))
+            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(300, 300))
 
             label_img = ctk.CTkLabel(master=janela, text='', image=img)
             label_img.place(x=40, y=70)
