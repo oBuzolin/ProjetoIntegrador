@@ -62,7 +62,7 @@ class Application(BackEnd):
             janela.resizable(False, False)
 
         def telaLogin(self):
-            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(300, 300))
+            img = ctk.CTkImage(Image.open("Minerva_Desktop/foto2.png"), size=(300, 300))
 
             label_img = ctk.CTkLabel(master=janela, text='', image=img)
             label_img.place(x=40, y=70)
