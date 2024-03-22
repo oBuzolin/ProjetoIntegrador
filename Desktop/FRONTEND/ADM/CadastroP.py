@@ -62,7 +62,7 @@ class Application(BackEnd):
             janela.resizable(False, False)
 
         def telaLogin(self):
-            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(150, 300))
+            img = ctk.CTkImage(Image.open("foto2.png"), size=(150, 300))
 
             label_img = ctk.CTkLabel(master=janela, text='', image=img)
             label_img.place(x=20, y=100)
@@ -75,28 +75,28 @@ class Application(BackEnd):
             login_frame.pack(side=RIGHT)
 
             #frame widgets
-            label = ctk.CTkLabel(master=login_frame, text="Sistema de Login", font=('Arial',20,'bold'), text_color=('white'))
+            label = ctk.CTkLabel(master=login_frame, text="Sistema de cadrastro de Professor", font=('Arial',20,'bold'), text_color=('white'))
             label.place(x=25, y=5)
 
             #frame
             self.username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Nome", width=300,
-                                                font=('Robot', 14)).place(x=25, y=105)
+                                                font=('Robot', 14)).place(x=25, y=75)
             #self.username_label = ctk.CTkLabel(master=login_frame, text="*O campo de username é obrigatorio.", text_color='green',
             #                                    font=('Roboto', 8)).place(x=25, y=135)
 
             self.senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="materia", width=300,
-                                                font=('Robot', 14), show="*").place(x=25, y=175)
+                                                font=('Robot', 14), show="*").place(x=25, y=115)
             
             self.username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300,
-                                                font=('Robot', 14)).place(x=25, y=245)
+                                                font=('Robot', 14)).place(x=25, y=155)
             #self.senha_label = ctk.CTkLabel(master=login_frame, text="*O campo de senha é obrigatorio.", text_color='green',
             #                                    font=('Roboto', 8)).place(x=25, y=205)
             self.username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="senha", width=300,
-                                                font=('Robot', 14)).place(x=25, y=315)
+                                                font=('Robot', 14)).place(x=25, y=195)
 
-            self.checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=375)
+            #self.checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=245)
 
-            self.login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300, command=self.verifica_login).place(x=25, y=425)
+            self.login_buttom = ctk.CTkButton(master=login_frame, text="Cadrastro", width=300, command=self.verifica_login).place(x=25, y=245)
 
         def limpa_entry_login(self):
             self.username_entry.delete(0, END)
