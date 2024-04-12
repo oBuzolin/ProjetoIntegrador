@@ -1,13 +1,13 @@
+from tkinter import *
+from tkinter.ttk import *
 import customtkinter as ctk
-from _tkinter import *
-from PIL import *
+from PIL import Image
 from mysql.connector import connect
-import PyQt5
-#import psycopg2
+import psycopg2
 import mysql.connector
-#import pandas.io.sql as sqlio
-
-from tkinter import RIGHT, PhotoImage
+import pandas.io.sql as sqlio
+from tkinter import PhotoImage
+# icone = PhotoImage (file= '/run/media/eduardo/800694AB0694A426/Documents and Settings/Busolin/Documents/Escola/TCC/TCC/Desktop/FRONTEND/icon.png')
 #from PIL import Image, ImageTk
 janela = ctk.CTk()
 class BackEnd():
@@ -38,7 +38,7 @@ class BackEnd():
 
         self.conexao_mysql()
         self.cursor.execute("""SELECT * FROM Minerva_Login WHERE(usuário =? AND senha=?)""",
-                            (self.username_login, self.password_login))
+                            (self.username, self.password_login))
         self.verifica_dados = self.cursor.fetchone()
         self.limpa_entry_login()
 
@@ -58,14 +58,14 @@ class Application(BackEnd):
         def tela(self):
             janela.geometry("700x400")
             janela.title("Sistema de Login")
-            # janela.iconbitmap('icon.ico')
+            # janela.iconphoto(FALSE, icone)
             janela.resizable(False, False)
 
         def telaLogin(self):
-            img = ctk.CTkImage(Image.open("Minerva_Desktop/foto2.png"), size=(300, 300))
+            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(150, 300))
 
             label_img = ctk.CTkLabel(master=janela, text='', image=img)
-            label_img.place(x=40, y=70)
+            label_img.place(x=20, y=100)
 
             self.titulo_label = ctk.CTkLabel(master=janela, text="Entre na sua conta e tenha \n acesso a plataforma",
                                        font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
@@ -80,24 +80,21 @@ class Application(BackEnd):
 
             #frame
             self.username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Username", width=300,
-                                                font=('Robot', 14)).place(x=25, y=90)
+                                                font=('Robot', 14)).place(x=25, y=105)
             #self.username_label = ctk.CTkLabel(master=login_frame, text="*O campo de username é obrigatorio.", text_color='green',
             #                                    font=('Roboto', 8)).place(x=25, y=135)
 
             self.senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
-                                                font=('Robot', 14), show="*").place(x=25, y=150)
+                                                font=('Robot', 14), show="*").place(x=25, y=175)
             #self.senha_label = ctk.CTkLabel(master=login_frame, text="*O campo de senha é obrigatorio.", text_color='green',
             #                                    font=('Roboto', 8)).place(x=25, y=205)
 
-            self.checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=200)
+            self.checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=235)
 
-            self.login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300, command=self.verifica_login, fg_color="black", hover_color="#401a1e").place(x=25, y=255)
-            self.loginGoogle_buttom = ctk.CTkButton(master=login_frame, text="Conecte ao Google", width=300, fg_color="#FF6347", hover_color="#FF6347", text_color="black").place(x=25, y=300)
-            self.salvarsenha_label = ctk.CTkLabel(master=login_frame, text="Esqueceu a senha?", text_color='white',
-                                              font=('Roboto', 15)).place(x=110, y=350)
+            self.login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300, command=self.verifica_login).place(x=25, y=285)
+
         def limpa_entry_login(self):
             self.username_entry.delete(0, END)
             self.senha_entry.delete(0, END)
-
 
 Application()
