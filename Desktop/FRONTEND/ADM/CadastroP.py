@@ -1,49 +1,48 @@
-import tkinter as tk
-from PIL import Image, ImageTk
+import customtkinter as ctk
+from cryptography.fernet import Fernet
 
-janela = tk.Tk()
+janela = ctk.CTk()
 
-def tela():
-  janela.geometry("700x400")
-  janela.title("Sistema de Login")
-  janela.resizable(False, False)
+class Application():
+    def __init__(self):
+        self.janela=janela
+        self.tema()
+        self.tela()
+        self.telaCadastroProfessor()
+        janela.mainloop()
 
-def telaLogin():
-  img = ImageTk.PhotoImage(Image.open("foto2.png").resize((150, 300)))
+    def tema(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
 
-  label_img = tk.Label(janela, image=img)
-  label_img.place(x=20, y=100)
+    def tela(self):
+        janela.geometry("700x400")
+        janela.title("Cadastro de Professor")
+        janela.resizable(False, False)
 
-  titulo_label = tk.Label(janela, text="Entre na sua conta e tenha \n acesso a plataforma",
-                          font=("Roboto", 20), foreground="#00B0F0")
-  titulo_label.place(x=50, y=10)
+    def telaCadastroProfessor(self):
+        label_img = ctk.CTkLabel(master=janela, text='').place(x=20, y=100)
 
-  # frame
-  login_frame = tk.Frame(janela, width=350, height=396)
-  login_frame.pack(side="RIGHT")
+        titulo_label = ctk.CTkLabel(master=janela, text="Cadastre-se como professor \n na plataforma",
+                               font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
 
-  # frame widgets
-  label = tk.Label(login_frame, text="Sistema de Login", font=('Arial',20,'bold'), foreground='white')
-  label.place(x=25, y=5)
+        cadastro_frame = ctk.CTkFrame(master=janela, width=350, height=396)
+        cadastro_frame.pack(side=ctk.RIGHT)
 
-  # username entry
-  username_entry = tk.Entry(login_frame, placeholder_text="Nome", width=300,
-                             font=('Robot', 14))
-  username_entry.place(x=25, y=105)
+        label = ctk.CTkLabel(master=cadastro_frame, text="Cadastro de Professor", font=('Arial',20,'bold'), text_color=('white'))
+        label.place(x=25, y=5)
 
-  # password entry
-  senha_entry = tk.Entry(login_frame, placeholder_text="Senha", width=300,
-                         font=('Robot', 14), show="*")
-  senha_entry.place(x=25, y=175)
+        nome_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Nome", width=300,
+                                            font=('Roboto', 14)).place(x=25, y=105)
 
-  # checkbox
-  checkbox = tk.Checkbutton(login_frame, text="Lembre-se de mim sempre")
-  checkbox.place(x=25, y=305)
+        email_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Email", width=300,
+                                            font=('Roboto', 14)).place(x=25, y=175)
+        
+        senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300,
+                                            font=('Roboto', 14), show="*").place(x=25, y=245)
 
-  # login button
-  login_buttom = tk.Button(login_frame, text="LOGIN", width=300)
-  login_buttom.place(x=25, y=355)
+        checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Lembre-se de mim sempre").place(x=25, y=305)
 
-tela()
-telaLogin()
-janela.mainloop()
+        cadastro_button = ctk.CTkButton(master=cadastro_frame, text="CADASTRAR", width=300).place(x=25, y=355)
+
+Application()

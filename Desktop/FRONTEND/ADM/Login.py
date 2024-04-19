@@ -1,100 +1,98 @@
-from tkinter import *
-from tkinter.ttk import *
+# imports backend
 import customtkinter as ctk
-from PIL import Image
-from mysql.connector import connect
-import psycopg2
-import mysql.connector
-import pandas.io.sql as sqlio
-from tkinter import PhotoImage
-# icone = PhotoImage (file= '/run/media/eduardo/800694AB0694A426/Documents and Settings/Busolin/Documents/Escola/TCC/TCC/Desktop/FRONTEND/icon.png')
-#from PIL import Image, ImageTk
+import tkinter as tk
+from PIL import Image, ImageTk
+#cripto
+from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+
 janela = ctk.CTk()
-class BackEnd():
-    def conexao_mysql(self):
-        try:
-            conexao = mysql.connector.connect(
-                host='143.106.241.3',
-                user='cl201107',
-                password='cl*02032005',
-                database='cl201107'
+
+class Application():
+    def __init__(self):
+        self.janela = janela
+        self.tema()
+        self.tela()
+        self.telaLogin()
+        janela.mainloop()
+
+    def tema(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
+
+    def tela(self):
+        janela.geometry("700x400")
+        janela.title("Sistema de Login")
+        janela.resizable(False, False)
+
+    def telaLogin(self):
+        titulo_label = ctk.CTkLabel(master=janela, text="Entre na sua conta e tenha \n acesso a plataforma",
+                                    font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
+
+        login_frame = ctk.CTkFrame(master=janela, width=350, height=396)
+        login_frame.pack(side=ctk.RIGHT)
+
+        label = ctk.CTkLabel(master=login_frame, text="Sistema de Login", font=('Arial', 20, 'bold'),
+                              text_color=('white'))
+        label.place(x=25, y=5)
+
+        Email_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300,
+                                    font=('Roboto', 14))
+        Email_entry.place(x=25, y=75)
+
+        senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
+                                    font=('Roboto', 14), show="*")
+        senha_entry.place(x=25, y=135)
+
+        checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre")
+        checkbox.place(x=25, y=195)
+
+        def on_login_button_click(event):
+            # Gerar um par de chaves RSA (chave pública e privada)
+            private_key = rsa.generate_private_key(
+                public_exponent=65537,
+                key_size=2048
             )
-            self.cursor = conexao.cursor()
-        except mysql.connector.Error as err:
-            if err.errno == err.ER_ACCESS_DENIED_ERROR:
-                print('Something is wrong with your user name or')
+            public_key = private_key.public_key()
+
+            # Preparar a senha digitada para criptografia
+            senha = senha_entry.get()
+            senha_bytes = senha.encode('utf-8')
+
+            # Criptografar a senha usando a chave pública RSA
+            encrypted_password = public_key.encrypt(
+                senha_bytes,
+                padding.OAEP(
+                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                    algorithm=hashes.SHA256(),
+                    label=None
+                )
+            )
+
+            # Simulação: Suponha que 'encrypted_password' é o valor criptografado armazenado no banco de dados
+            stored_encrypted_password = encrypted_password
+
+            # Simulação: Obtendo o email do campo de entrada
+            email = Email_entry.get()
+
+            # Verificar se o email e a senha correspondem
+            if email == "usuario@example.com":
+                # Simulação: Recuperar a senha criptografada do banco de dados
+                # Aqui estamos simulando que a senha criptografada do usuário "usuario@example.com" é armazenada
+                # e recuperada do banco de dados
+                if encrypted_password == stored_encrypted_password:
+                    print("Login bem-sucedido!")
+                else:
+                    print("Senha incorreta!")
             else:
-                print(err)
-        else:
-            print("Conexão bem sucedida")
+                print("Usuário não encontrado!")
 
-    def desconecta_bd(self):
-        self.conn.close()
-        print("Banco de dado desconectado")
-
-    def verifica_login(self):
-        self.username = self.username_entry
-        self.senha = self.senha_entry
-
-        self.conexao_mysql()
-        self.cursor.execute("""SELECT * FROM Minerva_Login WHERE(usuário =? AND senha=?)""",
-                            (self.username, self.password_login))
-        self.verifica_dados = self.cursor.fetchone()
-        self.limpa_entry_login()
-
-class Application(BackEnd):
-        def __init__(self):
-            self.janela=janela
-            self.tema()
-            self.tela()
-            self.telaLogin()
-            janela.mainloop()
-
-        def tema(self):
-            ctk.set_appearance_mode("dark")
-            ctk.set_default_color_theme("dark-blue")
-
-
-        def tela(self):
-            janela.geometry("700x400")
-            janela.title("Sistema de Login")
-            # janela.iconphoto(FALSE, icone)
-            janela.resizable(False, False)
-
-        def telaLogin(self):
-            img = ctk.CTkImage(Image.open("FRONTEND/foto2.png"), size=(150, 300))
-
-            label_img = ctk.CTkLabel(master=janela, text='', image=img)
-            label_img.place(x=20, y=100)
-
-            self.titulo_label = ctk.CTkLabel(master=janela, text="Entre na sua conta e tenha \n acesso a plataforma",
-                                       font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
-
-            #frame
-            login_frame = ctk.CTkFrame(master=janela, width=350, height=396)
-            login_frame.pack(side=RIGHT)
-
-            #frame widgets
-            label = ctk.CTkLabel(master=login_frame, text="Sistema de Login", font=('Arial',20,'bold'), text_color=('white'))
-            label.place(x=25, y=5)
-
-            #frame
-            self.username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Username", width=300,
-                                                font=('Robot', 14)).place(x=25, y=105)
-            #self.username_label = ctk.CTkLabel(master=login_frame, text="*O campo de username é obrigatorio.", text_color='green',
-            #                                    font=('Roboto', 8)).place(x=25, y=135)
-
-            self.senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
-                                                font=('Robot', 14), show="*").place(x=25, y=175)
-            #self.senha_label = ctk.CTkLabel(master=login_frame, text="*O campo de senha é obrigatorio.", text_color='green',
-            #                                    font=('Roboto', 8)).place(x=25, y=205)
-
-            self.checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=235)
-
-            self.login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300, command=self.verifica_login).place(x=25, y=285)
-
-        def limpa_entry_login(self):
-            self.username_entry.delete(0, END)
-            self.senha_entry.delete(0, END)
+        login_button = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
+        login_button.place(x=25, y=255)
+        login_button.bind("<Button-1>", on_login_button_click)
 
 Application()

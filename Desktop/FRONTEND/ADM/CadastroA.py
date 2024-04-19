@@ -1,6 +1,14 @@
+#imports backend
 import customtkinter as ctk
 import tkinter as tk
 from PIL import Image, ImageTk
+#----------------------------------------------------------------------------------------------------------------------------------------
+#imposts criptografia
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
 
 janela = ctk.CTk()
 
@@ -26,7 +34,6 @@ class Application():
                                 font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
 
     # colocar imagem
-    
 
     login_frame = ctk.CTkFrame(master=janela, width=350, height=396)
     login_frame.pack(side=ctk.RIGHT)
@@ -35,15 +42,39 @@ class Application():
     label.place(x=25, y=5)
 
     username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Nome", width=300,
-                                    font=('Robot', 14)).place(x=25, y=105)
+                                    font=('Robot', 14))
+    username_entry.place(x=25, y=75)
 
-    senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300,
-                                font=('Robot', 14), show="*").place(x=25, y=175)
+    Email_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300,
+                                    font=('Robot', 14))
+    Email_entry.place(x=25, y=135)
 
-    username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="senha", width=300,
-                                    font=('Robot', 14)).place(x=25, y=245)
+    senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
+                                font=('Robot', 14), show="*")
+    senha_entry.place(x=25, y=205)
 
-    checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre").place(x=25, y=305)
+    checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre")
+    checkbox.place(x=25, y=265)
+    
+    def on_login_button_click(event):
+        #gerando chave de criptografia
+        key = Fernet.generate_key()
+        cipher_suite = Fernet(key)
+        
+        #preparando email
+        email = Email_entry.get()
+        print(f'Email: {email}')
+        
+        #preparando senha
+        # senha = str(senha_entry.get())
+        # senha_bytes = senha.encode('utf-8')
+        # cipher_text = cipher_suite.encrypt(senha_bytes)
+        # print(f'Senha: {cipher_text}')
+        #teste 2 cripto
+        
+        
+    login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
+    login_buttom.place(x=25, y=325)
+    login_buttom.bind("<Button-1>", on_login_button_click)
 
-    login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300).place
 Application()
