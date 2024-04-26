@@ -72,7 +72,8 @@ class Application():
                     label=None
                 )
             )
-
+            #email comparação
+            
             # Simulação: Suponha que 'encrypted_password' é o valor criptografado armazenado no banco de dados
             stored_encrypted_password = encrypted_password
 
@@ -81,9 +82,9 @@ class Application():
 
             # Verificar se o email e a senha correspondem
             if email == "usuario@example.com":
-                # Simulação: Recuperar a senha criptografada do banco de dados
-                # Aqui estamos simulando que a senha criptografada do usuário "usuario@example.com" é armazenada
-                # e recuperada do banco de dados
+                
+                
+                
                 if encrypted_password == stored_encrypted_password:
                     print("Login bem-sucedido!")
                 else:
