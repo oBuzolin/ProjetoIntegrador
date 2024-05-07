@@ -48,12 +48,46 @@ class Application():
                                    font=('Roboto', 14))
         curso_entry.place(x=25, y=190)
 
-        senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300,
-                                   font=('Roboto', 14), show="*")
+        checkbox_var = ctk.BooleanVar()
+        def toggle_show_password():
+            valor = checkbox_var.get()
+            if valor == True:
+                senha_entry.configure(show="")
+            else:
+                senha_entry.configure(show="*")
+        # Criar a CTkCheckBox e associar com a variável de controle
+        checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
+        checkbox.place(x=25, y=310)
+
+        # Criar a CTkEntry para a senha
+        senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300, font=('Roboto', 14), show="*")
         senha_entry.place(x=25, y=245)
         
-        # checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Lembre-se de mim sempre")
+                # senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300,
+        #                            font=('Roboto', 14), show="*")
+        # senha_entry.place(x=25, y=245)
+        
+        # checkboxVar = ctk.BooleanVar()
+        # def obter_valor_checkbox():
+        #     valor = checkboxVar.get()
+        #     if valor == True:
+        #         senha_entry.config(show="")
+        #     else:
+        #         senha_entry.config(show="*")
+        #     #     senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300,
+        #     #                        font=('Roboto', 14))
+        #     #     senha_entry.place(x=25, y=245)
+        #     # else:
+        #     #     senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300,
+        #     #                        font=('Roboto', 14), show="*")
+        #     #     senha_entry.place(x=25, y=245)
+        
+        
+        
+        # checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Lembre-se de mim sempre",variable=checkboxVar)
         # checkbox.place(x=25, y=310)
+        
+        
         
         global nome
         global email
@@ -75,7 +109,7 @@ class Application():
                 label_NAceito.place(x=25,y=1007)
                 label_errorNV.pack()  
                 label_errorNV.place(x=25,y=107)
-                
+                comf = 0
 
             else:  # Esconde mensagem de erro se nome for válido
                 #label_errorNV.destroy()
@@ -87,6 +121,7 @@ class Application():
                     label_NAceito.place(x=25,y=1007)
                     label_errorSS.pack()  
                     label_errorSS.place(x=25,y=107)
+                    comf = 0
                 else:
                     label_errorSS.place(x=25,y=1007)
                     label_NAceito.pack()  
@@ -96,12 +131,14 @@ class Application():
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.pack()  
                         label_errorEV.place(x=25,y=162)
+                        comf = 0
                     else:
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.place(x=25,y=1620)
                         if not "@gmail.com" in email:
                             label_errorSAR.pack()  
                             label_errorSAR.place(x=25,y=162)
+                            comf = 0
                         else:
                             label_errorSAR.place(x=25,y=1620)
                             label_errorEV.place(x=25,y=1620)
@@ -112,12 +149,14 @@ class Application():
                                 label_CAceito.place(x=25,y=1620)
                                 label_errorCV.pack()  
                                 label_errorCV.place(x=25,y=217)
+                                comf = 0
                             else:
                                 label_CAceito.place(x=25,y=1620)
                                 label_errorCV.place(x=25,y=1620)
                                 if len(Curso) < 8:
                                     label_errorCM8.pack()  
                                     label_errorCM8.place(x=25,y=217)
+                                    comf = 0
                                 else:
                                     label_errorCV.place(x=25,y=1620)
                                     label_errorCM8.place(x=25,y=1620)
@@ -128,12 +167,14 @@ class Application():
                                         label_SAceito.place(x=25,y=1620)
                                         label_errorSV.pack()  
                                         label_errorSV.place(x=25,y=272)
+                                        comf = 0
                                     else:
                                         label_SAceito.place(x=25,y=1620)
                                         label_errorSV.place(x=25,y=1620)
                                         if len(Curso) < 8:
                                             label_errorSM8.pack()  
                                             label_errorSM8.place(x=25,y=217)
+                                            comf = 0
                                         else:
                                             label_errorSV.place(x=25,y=1620)
                                             label_errorSM8.place(x=25,y=1620)
@@ -179,6 +220,7 @@ class Application():
                         conexao.close()
                 informacoes = obter_informacoes_usuario()
                 inserir_dados_mysql(informacoes)
+                comf = comf+1
             else:
                 print("incompleto")
 
