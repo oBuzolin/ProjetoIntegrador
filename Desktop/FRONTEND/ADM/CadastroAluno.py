@@ -2,6 +2,13 @@ import customtkinter as ctk
 from cryptography.fernet import Fernet
 import mysql.connector
 import random
+#imposts criptografia
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+
 comf = 0;
 janela = ctk.CTk()
 
@@ -12,7 +19,7 @@ class Application():
         self.janela = janela
         self.tema()
         self.tela()
-        self.telaCadastroProfessor()
+        self.telaCadastroAluno()
         janela.mainloop()
 
     def tema(self):
@@ -24,7 +31,7 @@ class Application():
         janela.title("Cadastro de Aluno")
         janela.resizable(False, False)
 
-    def telaCadastroProfessor(self):
+    def telaCadastroAluno(self):
         titulo_label = ctk.CTkLabel(master=janela, text="Cadastre-se como aluno \n na plataforma",
                                     font=("Roboto", 20), text_color="#00B0F0")
         titulo_label.place(x=50, y=10)
@@ -64,21 +71,21 @@ class Application():
         senha_entry.place(x=25, y=245)
         
         
-        global nome
+        global nome1
         global email
         global senha
         global Curso
         global RA
         def get_dados():
-            nome = nome_entry.get().strip()
+            nome1 = nome_entry.get().strip()
             email = email_entry.get().strip()
             senha = senha_entry.get().strip()
             Curso = curso_entry.get().strip()
-            return(nome,email,senha,Curso)
+            return(nome1,email,senha,Curso)
         
         
         def valida():
-            nome, email, senha, Curso = get_dados()
+            nome, email, senha1, Curso = get_dados()
             if not nome:
                 label_errorSS.place(x=25,y=1007)
                 label_NAceito.place(x=25,y=1007)
@@ -137,7 +144,7 @@ class Application():
                                     label_errorCM8.place(x=25,y=1620)
                                     label_CAceito.pack()  
                                     label_CAceito.place(x=25,y=217)
-                                    if not senha:
+                                    if not senha1:
                                         label_errorCM8.place(x=25,y=1620)
                                         label_SAceito.place(x=25,y=1620)
                                         label_errorSV.pack()  
@@ -146,56 +153,75 @@ class Application():
                                     else:
                                         label_SAceito.place(x=25,y=1620)
                                         label_errorSV.place(x=25,y=1620)
-                                        if len(Curso) < 8:
+                                        if len(senha1) < 8:
                                             label_errorSM8.pack()  
-                                            label_errorSM8.place(x=25,y=217)
+                                            label_errorSM8.place(x=25,y=272)
                                             comf = 0
                                         else:
                                             label_errorSV.place(x=25,y=1620)
                                             label_errorSM8.place(x=25,y=1620)
                                             label_SAceito.pack()  
-                                            label_SAceito.place(x=25,y=217)
+                                            label_SAceito.place(x=25,y=272)
                                             comf = 1
                                             return comf
     # função de cadastro
         def on_login_button_click(event):
             valida()
-            nome, email, senha, Curso = get_dados()
+            nome, email, senha1, Curso = get_dados()
             RA = random.randint(10000, 99999)
             comf = valida()
+            
             if comf == 1:
-                def obter_informacoes_usuario():
-                    return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
-
-                def inserir_dados_mysql(dados):
-                    try:
-                        conexao = mysql.connector.connect(
-                            host="143.106.241.3",
-                            port=3306,
-                            user="cl201107",
-                            password="cl*02032005",
-                            database="cl201107"
-                        )
-
-                        cursor = conexao.cursor()
-
-                        sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
-
-                        cursor.execute(sql, dados)
-
-                        conexao.commit()
-                        print("Dados inseridos com sucesso!")
-
-                    except mysql.connector.Error as erro:
-                        print(f"Erro ao inserir dados no banco de dados: {erro}")
-                        conexao.rollback()
-
-                    finally:
-                        cursor.close()
-                        conexao.close()
-                informacoes = obter_informacoes_usuario()
-                inserir_dados_mysql(informacoes)
-                comf = comf+1
+                private_key = rsa.generate_private_key(
+                public_exponent=65537,
+                key_size=2048
+                )
+                public_key = private_key.public_key()
+                senha_bytes = senha1.encode('utf-8')
+ 
+                # Criptografar a senha usando a chave pública RSA
+                encrypted_password = public_key.encrypt(
+                     senha_bytes,
+                     padding.OAEP(
+                         mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                         algorithm=hashes.SHA256(),
+                         label=None
+                     )
+                 )
+                senha = encrypted_password
+                print(senha)
+                # def obter_informacoes_usuario():
+                    # return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
+# 
+                # def inserir_dados_mysql(dados):
+                    # try:
+                        # conexao = mysql.connector.connect(
+                            # host="143.106.241.3",
+                            # port=3306,
+                            # user="cl201107",
+                            # password="cl*02032005",
+                            # database="cl201107"
+                        # )
+# 
+                        # cursor = conexao.cursor()
+# 
+                        # sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
+# 
+                        # cursor.execute(sql, dados)
+# 
+                        # conexao.commit()
+                        # print("Dados inseridos com sucesso!")
+# 
+                    # except mysql.connector.Error as erro:
+                        # print(f"Erro ao inserir dados no banco de dados: {erro}")
+                        # conexao.rollback()
+# 
+                    # finally:
+                        # cursor.close()
+                        # conexao.close()
+                # informacoes = obter_informacoes_usuario()
+                # inserir_dados_mysql(informacoes)
+                # comf = comf+1
             else:
                 print("incompleto")
 
