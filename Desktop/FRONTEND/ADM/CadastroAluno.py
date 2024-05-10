@@ -177,51 +177,48 @@ class Application():
                 key_size=2048
                 )
                 public_key = private_key.public_key()
-                senha_bytes = senha1.encode('utf-8')
+                senha_bytes = senha1.encode()
  
                 # Criptografar a senha usando a chave pública RSA
                 encrypted_password = public_key.encrypt(
-                     senha_bytes,
-                     padding.OAEP(
-                         mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                         algorithm=hashes.SHA256(),
-                         label=None
-                     )
-                 )
+                senha_bytes,
+                padding.PKCS1v15()
+                )
                 senha = encrypted_password
-                print(senha)
-                # def obter_informacoes_usuario():
-                    # return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
-# 
-                # def inserir_dados_mysql(dados):
-                    # try:
-                        # conexao = mysql.connector.connect(
-                            # host="143.106.241.3",
-                            # port=3306,
-                            # user="cl201107",
-                            # password="cl*02032005",
-                            # database="cl201107"
-                        # )
-# 
-                        # cursor = conexao.cursor()
-# 
-                        # sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
-# 
-                        # cursor.execute(sql, dados)
-# 
-                        # conexao.commit()
-                        # print("Dados inseridos com sucesso!")
-# 
-                    # except mysql.connector.Error as erro:
-                        # print(f"Erro ao inserir dados no banco de dados: {erro}")
-                        # conexao.rollback()
-# 
-                    # finally:
-                        # cursor.close()
-                        # conexao.close()
-                # informacoes = obter_informacoes_usuario()
-                # inserir_dados_mysql(informacoes)
-                # comf = comf+1
+                
+                def obter_informacoes_usuario():
+                    return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
+
+                def inserir_dados_mysql(dados):
+                    try:
+                        conexao = mysql.connector.connect(
+                            host="143.106.241.3",
+                            port=3306,
+                            user="cl201107",
+                            password="cl*02032005",
+                            database="cl201107"
+                        )
+
+                        cursor = conexao.cursor()
+
+                        sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
+
+                        cursor.execute(sql, dados)
+
+                        conexao.commit()
+                        print("Dados inseridos com sucesso!")
+                        print(senha)
+
+                    except mysql.connector.Error as erro:
+                        print(f"Erro ao inserir dados no banco de dados: {erro}")
+                        conexao.rollback()
+
+                    finally:
+                        cursor.close()
+                        conexao.close()
+                informacoes = obter_informacoes_usuario()
+                inserir_dados_mysql(informacoes)
+                comf = comf+1
             else:
                 print("incompleto")
 

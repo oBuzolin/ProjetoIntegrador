@@ -9,7 +9,8 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
-
+#banco
+import mysql.connector
 janela = ctk.CTk()
 
 class Application():
@@ -63,34 +64,68 @@ class Application():
             senha = senha_entry.get()
             senha_bytes = senha.encode('utf-8')
 
-            # Criptografar a senha usando a chave pública RSA
             encrypted_password = public_key.encrypt(
                 senha_bytes,
-                padding.OAEP(
-                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                    algorithm=hashes.SHA256(),
-                    label=None
-                )
+                padding.PKCS1v15()
             )
             #email comparação
             
             # Simulação: Suponha que 'encrypted_password' é o valor criptografado armazenado no banco de dados
-            stored_encrypted_password = encrypted_password
-
+            
+            senha = encrypted_password
             # Simulação: Obtendo o email do campo de entrada
             email = Email_entry.get()
-
+            
             # Verificar se o email e a senha correspondem
-            if email == "usuario@example.com":
-                
-                
-                
-                if encrypted_password == stored_encrypted_password:
-                    print("Login bem-sucedido!")
-                else:
-                    print("Senha incorreta!")
-            else:
-                print("Usuário não encontrado!")
+            def check_email_and_password(email, password):
+                try:
+                    # Estabelecer conexão com o banco de dados MySQL
+                    conn = mysql.connector.connect(
+                        host="143.106.241.3",
+                        port=3306,
+                        user="cl201107",
+                        password="cl*02032005",
+                        database="cl201107"
+                    )
+
+                    # Criar um cursor para executar comandos SQL
+                    cursor = conn.cursor()
+
+                    # Consulta SQL para verificar se o email existe
+                    sql = "SELECT senha FROM Minerva_Aluno WHERE email = %s"
+                    cursor.execute(sql, (email,))
+
+                    # Obter o resultado da consulta
+                    result = cursor.fetchone()  # Retorna uma única linha se encontrar
+
+                    if result:
+                        # Email encontrado, verificar a senha
+                        hashed_password_from_db = result[0]
+
+                        # Verificar se a senha fornecida corresponde à senha no banco de dados
+                        if check_password(password, hashed_password_from_db):
+                            print(f"Email '{email}' encontrado e a senha está correta.")
+                        else:
+                            print(f"Email '{email}' encontrado, mas a senha está incorreta.")
+                            print(senha)
+                    else:
+                        print(f"O email '{email}' não foi encontrado no banco de dados.")
+
+                except mysql.connector.Error as error:
+                    print(f"Erro ao conectar ou executar consulta: {error}")
+
+                finally:
+                    # Fechar cursor e conexão com o banco de dados
+                    if 'cursor' in locals():
+                        cursor.close()
+                    if 'conn' in locals() and conn.is_connected():
+                        conn.close()
+
+            def check_password(input_password, hashed_password):
+                # Neste exemplo simulado, verificamos a senha sem hash (por motivos educacionais)
+                # Em produção, você deve verificar usando um método seguro, como bcrypt, pbkdf2, etc.
+                return input_password == hashed_password
+            check_email_and_password(email, senha)
 
         login_button = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
         login_button.place(x=25, y=255)

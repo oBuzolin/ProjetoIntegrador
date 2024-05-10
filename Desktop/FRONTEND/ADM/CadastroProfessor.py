@@ -1,8 +1,7 @@
-#imports backend
 import customtkinter as ctk
-import tkinter as tk
-from PIL import Image, ImageTk
-#----------------------------------------------------------------------------------------------------------------------------------------
+from cryptography.fernet import Fernet
+import mysql.connector
+import random
 #imposts criptografia
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -10,71 +9,319 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 
+comf = 0;
 janela = ctk.CTk()
 
+# banco iniciar
+
 class Application():
-  def __init__(self):
-    self.janela=janela
-    self.tema()
-    self.tela()
-    self.telaLogin()
-    janela.mainloop()
+    def __init__(self):
+        self.janela = janela
+        self.tema()
+        self.tela()
+        self.telaCadastroAluno()
+        janela.mainloop()
 
-  def tema(self):
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("dark-blue")
+    def tema(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
 
-  def tela(self):
-    janela.geometry("700x400")
-    janela.title("Sistema de Login")
-    janela.resizable(False, False)
+    def tela(self):
+        janela.geometry("700x400")
+        janela.title("Cadastro de Aluno")
+        janela.resizable(False, False)
 
-  def telaLogin(self):
-    titulo_label = ctk.CTkLabel(master=janela, text="Entre na sua conta e tenha \n acesso a plataforma",
-                                font=("Roboto", 20), text_color="#00B0F0").place(x=50, y=10)
+    def telaCadastroAluno(self):
+        titulo_label = ctk.CTkLabel(master=janela, text="Cadastre-se como aluno \n na plataforma",
+                                    font=("Roboto", 20), text_color="#00B0F0")
+        titulo_label.place(x=50, y=10)
 
-    # colocar imagem
+        cadastro_frame = ctk.CTkFrame(master=janela, width=350, height=396)
+        cadastro_frame.pack(side=ctk.RIGHT)
 
-    login_frame = ctk.CTkFrame(master=janela, width=350, height=396)
-    login_frame.pack(side=ctk.RIGHT)
+        label = ctk.CTkLabel(master=cadastro_frame, text="Cadastro de Aluno", font=('Arial', 20, 'bold'),
+                             text_color=('white'))
+        label.place(x=25, y=5)
 
-    label = ctk.CTkLabel(master=login_frame, text="Sistema de Login", font=('Arial',20,'bold'), text_color=('white'))
-    label.place(x=25, y=5)
+        nome_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Nome", width=300,
+                                  font=('Roboto', 14))
+        nome_entry.place(x=25, y=70)
 
-    username_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Nome", width=300,
-                                    font=('Robot', 14))
-    username_entry.place(x=25, y=75)
+        email_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Email", width=300,
+                                   font=('Roboto', 14))
+        email_entry.place(x=25, y=115)
 
-    Email_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300,
-                                    font=('Robot', 14))
-    Email_entry.place(x=25, y=135)
+        curso_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=300,
+                                   font=('Roboto', 14))
+        curso_entry.place(x=25, y=160)
 
-    senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
-                                font=('Robot', 14), show="*")
-    senha_entry.place(x=25, y=205)
-
-    checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre")
-    checkbox.place(x=25, y=265)
-    
-    def on_login_button_click(event):
-        #gerando chave de criptografia
-        key = Fernet.generate_key()
-        cipher_suite = Fernet(key)
+        CargH_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=145,
+                                   font=('Roboto', 14))
+        CargH_entry.place(x=25, y=205)
         
-        #preparando email
-        email = Email_entry.get()
-        print(f'Email: {email}')
+        DiaS_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=145,
+                                   font=('Roboto', 14))
+        DiaS_entry.place(x=180, y=205)
+
+        checkbox_var = ctk.BooleanVar()
+        def toggle_show_password():
+            valor = checkbox_var.get()
+            if valor == True:
+                senha_entry.configure(show="")
+            else:
+                senha_entry.configure(show="*")
+        # Criar a CTkCheckBox e associar com a variável de controle
+        checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
+        checkbox.place(x=25, y=300)
+
+        # Criar a CTkEntry para a senha
+        senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300, font=('Roboto', 14), show="*")
+        senha_entry.place(x=25, y=250)
         
-        #preparando senha
-        # senha = str(senha_entry.get())
-        # senha_bytes = senha.encode('utf-8')
-        # cipher_text = cipher_suite.encrypt(senha_bytes)
-        # print(f'Senha: {cipher_text}')
-        #teste 2 cripto
+        
+        global nome1
+        global email
+        global senha
+        global Curso
+        global RA
+        global CargH
+        global DiaS
+        def get_dados():
+            nome1 = nome_entry.get().strip()
+            email = email_entry.get().strip()
+            senha = senha_entry.get().strip()
+            Curso = curso_entry.get().strip()
+            CargH = CargH_entry.get().strip()
+            DiaS = DiaS_entry.get().strip()
+
+            return(nome1,email,senha,Curso,DiaS,CargH)
         
         
-    login_buttom = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
-    login_buttom.place(x=25, y=325)
-    login_buttom.bind("<Button-1>", on_login_button_click)
+        def valida():
+            nome, email, senha1, Curso,CargH,DiaS = get_dados()
+            if not nome:
+                label_errorSS.place(x=25,y=1007)
+                label_NAceito.place(x=25,y=1007)
+                label_errorNV.pack()  
+                label_errorNV.place(x=25,y=107)
+                comf = 0
+
+            else:  # Esconde mensagem de erro se nome for válido
+                #label_errorNV.destroy()
+                #label_errorNV.pack_forget()
+                label_errorNV.place(x=25,y=1007)
+                nomeC = nome.split()
+                contagem = len(nomeC)
+                if contagem < 2:
+                    label_NAceito.place(x=25,y=1007)
+                    label_errorSS.pack()  
+                    label_errorSS.place(x=25,y=107)
+                    comf = 0
+                else:
+                    label_errorSS.place(x=25,y=1007)
+                    label_NAceito.pack()  
+                    label_NAceito.place(x=25,y=107)
+                    if not email:
+                        label_errorSAR.place(x=25,y=1620)
+                        label_EAceito.place(x=25,y=1620)
+                        label_errorEV.pack()  
+                        label_errorEV.place(x=25,y=162)
+                        comf = 0
+                    else:
+                        label_EAceito.place(x=25,y=1620)
+                        label_errorEV.place(x=25,y=1620)
+                        if not "@gmail.com" in email:
+                            label_errorSAR.pack()  
+                            label_errorSAR.place(x=25,y=162)
+                            comf = 0
+                        else:
+                            label_errorSAR.place(x=25,y=1620)
+                            label_errorEV.place(x=25,y=1620)
+                            label_EAceito.pack()  
+                            label_EAceito.place(x=25,y=162)
+                            if not Curso:
+                                label_errorCM8.place(x=25,y=1620)
+                                label_CAceito.place(x=25,y=1620)
+                                label_errorCV.pack()  
+                                label_errorCV.place(x=25,y=217)
+                                comf = 0
+                            else:
+                                label_CAceito.place(x=25,y=1620)
+                                label_errorCV.place(x=25,y=1620)
+                                if len(Curso) < 8:
+                                    label_errorCM8.pack()  
+                                    label_errorCM8.place(x=25,y=217)
+                                    comf = 0
+                                else:
+                                    if not CargH:
+                                      label_errorCM8.place(x=25,y=1620)
+                                      label_CAceito.place(x=25,y=1620)
+                                      label_errorCV.pack()  
+                                      label_errorCV.place(x=25,y=217)
+                                      comf = 0
+                                    else:
+                                      label_CAceito.place(x=25,y=1620)
+                                      label_errorCV.place(x=25,y=1620)
+                                      if len(CargH) < 8:
+                                          label_errorCM8.pack()  
+                                          label_errorCM8.place(x=25,y=217)
+                                          comf = 0
+                                          label_errorCV.place(x=25,y=1620)
+                                          label_errorCM8.place(x=25,y=1620)
+                                          label_CAceito.pack()  
+                                          label_CAceito.place(x=25,y=217)
+                                      else:
+                                        if not Curso:
+                                          label_errorCM8.place(x=25,y=1620)
+                                          label_CAceito.place(x=25,y=1620)
+                                          label_errorCV.pack()  
+                                          label_errorCV.place(x=25,y=217)
+                                          comf = 0
+                                        else:
+                                            label_CAceito.place(x=25,y=1620)
+                                            label_errorCV.place(x=25,y=1620)
+                                            if len(Curso) < 8:
+                                                label_errorCM8.pack()  
+                                                label_errorCM8.place(x=25,y=217)
+                                                comf = 0
+                                            else:
+                                              if not senha1:
+                                                  label_errorCM8.place(x=25,y=1620)
+                                                  label_SAceito.place(x=25,y=1620)
+                                                  label_errorSV.pack()  
+                                                  label_errorSV.place(x=25,y=272)
+                                                  comf = 0
+                                              else:
+                                                  label_SAceito.place(x=25,y=1620)
+                                                  label_errorSV.place(x=25,y=1620)
+                                                  if len(senha1) < 8:
+                                                      label_errorSM8.pack()  
+                                                      label_errorSM8.place(x=25,y=272)
+                                                      comf = 0
+                                                  else:
+                                                      label_errorSV.place(x=25,y=1620)
+                                                      label_errorSM8.place(x=25,y=1620)
+                                                      label_SAceito.pack()  
+                                                      label_SAceito.place(x=25,y=272)
+                                                      comf = 1
+                                                      return comf
+    # função de cadastro
+        def on_login_button_click(event):
+            valida()
+            nome, email, senha1, Curso, CargH, DiaS = get_dados()
+            RA = random.randint(10000, 99999)
+            comf = valida()
+            
+            if comf == 1:
+                private_key = rsa.generate_private_key(
+                public_exponent=65537,
+                key_size=2048
+                )
+                public_key = private_key.public_key()
+                senha_bytes = senha1.encode('utf-8')
+ 
+                # Criptografar a senha usando a chave pública RSA
+                encrypted_password = public_key.encrypt(
+                     senha_bytes,
+                     padding.OAEP(
+                         mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                         algorithm=hashes.SHA256(),
+                         label=None
+                     )
+                 )
+                senha = encrypted_password
+                
+                def obter_informacoes_usuario():
+                    return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
+
+                def inserir_dados_mysql(dados):
+                    try:
+                        conexao = mysql.connector.connect(
+                            host="143.106.241.3",
+                            port=3306,
+                            user="cl201107",
+                            password="cl*02032005",
+                            database="cl201107"
+                        )
+
+                        cursor = conexao.cursor()
+
+                        sql = "INSERT INTO Minerva_Professor (Nome, Disiplina,CargaHoraria, DiasSemana, email, senha, RA) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
+
+                        cursor.execute(sql, dados)
+
+                        conexao.commit()
+                        print("Dados inseridos com sucesso!")
+
+                    except mysql.connector.Error as erro:
+                        print(f"Erro ao inserir dados no banco de dados: {erro}")
+                        conexao.rollback()
+
+                    finally:
+                        cursor.close()
+                        conexao.close()
+                informacoes = obter_informacoes_usuario()
+                inserir_dados_mysql(informacoes)
+                comf = comf+1
+            else:
+                print("incompleto")
+
+
+
+        cadastro_buttom = ctk.CTkButton(master=cadastro_frame, text="cadastro", width=300)
+        cadastro_buttom.place(x=25, y=340)
+        cadastro_buttom.bind("<Button-1>", on_login_button_click,)
+        #
+        #
+        #erros
+        #NOME
+        global label_errorNV#nome vazio
+        global label_errorSS#sem sobrenome
+        label_errorNV = ctk.CTkLabel(master=cadastro_frame, text="nome vazio, coloque um nome valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorSS = ctk.CTkLabel(master=cadastro_frame, text="sem sobrenome, coloque um nome valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #
+        #EMAIL
+        global label_errorEV#email vazio
+        global label_errorSAR#sem @gmail.com
+        label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="Email vazio, coloque um email valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorSAR = ctk.CTkLabel(master=cadastro_frame, text="sem @gmail, coloque um email valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #
+        #Cursos
+        global label_errorCV#curso vazio
+        global label_errorCM8# menos de oito caracter
+        label_errorCV = ctk.CTkLabel(master=cadastro_frame, text="curso vazio, coloque um curso valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorCM8 = ctk.CTkLabel(master=cadastro_frame, text="curso com menos de 8 caracteres, coloque um Curso valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #
+        #senhas
+        global label_errorSV#curso vazio
+        global label_errorSM8# menos de oito caracter
+        label_errorSV = ctk.CTkLabel(master=cadastro_frame, text="senha vazio, coloque um senha valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorSM8 = ctk.CTkLabel(master=cadastro_frame, text="senha com menos de 8 caracteres, coloque um senha valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #
+        #aceito
+        global label_NAceito#nome
+        global label_EAceito#Email
+        global label_CAceito#Curso
+        global label_SAceito#senha
+        label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="nome valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+        label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="email valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+        label_CAceito = ctk.CTkLabel(master=cadastro_frame, text="Curso valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+        label_SAceito = ctk.CTkLabel(master=cadastro_frame, text="senha valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+
+        
+        
 
 Application()
+
