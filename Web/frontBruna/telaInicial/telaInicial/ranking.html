@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Ranking</title>
+
+    <style>
+        body {
+          font-family: arial;
+          color: #000;
+        }
+  
+        h2, h5 {
+          text-align: center;
+        }
+
+        .container {    
+          max-width: 600px;
+          height: 400px; 
+          margin: 0 auto;
+          border: 1px solid #000;
+          display: flex; 
+          flex-direction: row; 
+          /*flex-wrap: wrap; retirar para não ter quebra de linha qd nao cabe no container */
+          justify-content: center;
+          /*align-content: space-between;*/
+          align-items: center;     
+        }
+
+      .item {
+        margin: 5px; /*não pode ser auto senão os itens se espalham */
+        padding: 5px;    
+        text-align: center;      
+        font-size: 12px; 
+        background: lightgray;
+      }
+
+      .item img {
+        width: 100%;
+      }
+
+      .item:hover {
+        transform: scale(1.2,1.2);
+      }
+
+      .flex0 {
+        flex: 0; /*flex-grow: 0, flex-shrink:1 e flex-basis:0 (para tirar a flexibilidade do elemento)*/
+      }   
+
+      .flex1 {
+        flex: 1; /*flex-grow: 1, flex-shrink:1 e flex-basis:0 (para os elementos se adaptarem ao container)*/
+      }             
+    </style>
+  </head>
+
+  <body>   
+
+    <h2>Funcionários</h2>
+    <h5>Conheça a nossa equipe</h5>
+
+    <div class="container">
+      <div class="item flex0">
+          <img src="fotos/fotoFunc1.png"><br>
+          <span>Ana Maria Silva<br>Analista de Requisitos</span>
+      </div>
+
+      <div class="item flex0">
+          <img src="fotos/fotoFunc2.png"><br>
+          <span>Cristina Medeiros<br>Programadora</span>
+      </div>
+      
+      <div class="item flex0">
+          <img src="fotos/fotoFunc3.png"><br>
+          <span>João Antunes<br>Analista de Dados</span>
+      </div>
+      
+      <div class="item flex0">
+          <img src="fotos/fotoFunc4.png"><br>
+          <span>Paulo Nogueira<br>Programador</span>
+      </div>
+    </div>  
+
+    <div class="container">         
+      
+      <div class="item flex1">
+          <img src="fotos/fotoFunc5.png"><br>
+          <span>Silvia Maria<br>Analista de Requisitos</span>
+      </div>
+      
+      <div class="item flex1">
+          <img src="fotos/fotoFunc6.png"><br>
+          <span>Pedro Camargo<br>Programador</span>
+      </div>
+      
+      <div class="item flex1">
+          <img src="fotos/fotoFunc7.png"><br>
+          <span>Carla Vieira<br>Programadora</span>
+      </div>
+      
+      <div class="item flex1">
+          <img src="fotos/fotoFunc8.png"><br>
+          <span>Patrícia Neves<br>Analista de Dados</span>
+      </div>     
+    </div>
+
+</body>  
+  
+</html>

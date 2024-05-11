@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Minerva</title>
+
+        <style type="text/css">
+
+            #menu
+                        {
+                            background-color: rgb(153, 143, 143);
+                            color: black;
+                            padding: 10px;
+                            text-align: left;
+                            font-size: 30px;
+                        }
+
+            #nav
+                        {
+                            max-width: 200px;
+                            width: 100%;
+                            background-color: bisque;
+                        }	
+
+            #section
+                        {
+                            background-color: aqua;
+                            display: inline-block;
+                        }
+
+            #container {
+                            max-width: 60%;
+                            max-height: 700px;     
+                            margin: 0 auto; 
+                            /*border: 1px solid #000;*/
+                            display: flex;         
+
+                            /* 
+                                flex-direction: column;
+                                flex-wrap: wrap; 
+                            ou */
+
+                            flex-flow: row wrap; /* flex-direction flex-wrap */          
+                        }
+
+            #item {
+                margin: auto;
+                padding: 5px;    
+                text-align: center;      
+                font-size: 12px;                        
+                }
+
+            #item img {
+                 width: 200px;
+                 }
+
+            #item:hover {
+                transform: scale(1.2,1.2);
+                }
+
+        </style>
+    </head>
+    <body> 
+        <header>
+            <div id="menu"> 
+                <figure>
+                <img src="livro.png" alt="Minha Figura" width="30" height="30">
+                MINERVA
+                <img src="perfil.jpg" alt="Minha Mais" width="30" height="30" align="right">
+                <img src="mais.jpg" alt="Minha Mais" width="30" height="30" align="right">   
+                </figure>
+            </div>
+        <hr> 
+        </header>
+  
+
+        
+        <nav>
+            <div id="nav">
+            <br>
+            <br>
+
+
+                <ul>
+                    <ul><b>Ínicio</b></ul> <br> <a href=“ranking.html">Entre em contato conosco.</a>
+                    <ul><b>Agenda</b></ul> <br>
+                    <ul><b>Fixados</b></ul> <br>
+                    <ul><b>Pendentes</b></ul> <br>
+                    <ul><b>Turmas Arquivadas</b></ul> <br>
+                    <ul><b>Ranking</b></ul> <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                            
+                        <ulfigure>
+                            <img src="configuracao.png" alt="Minha configuracoes" width="30" height="30">
+                        </figure>
+                            <b>Configurações</b></ul>
+                                
+                        </ul>
+                    </div>
+            </nav>
+            
+    
+            <div class="container"> 
+
+                <div class="item">
+                    <img src="configuracao.png><br>
+                    <span>Ana Maria Silva<br>Analista de Requisitos</span>
+                </div>
+        <section>
+            aaaaaaaaaaassaaa
+        </section>
+    </body>
+</html>
