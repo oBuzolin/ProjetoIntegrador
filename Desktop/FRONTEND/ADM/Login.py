@@ -3,12 +3,7 @@ import customtkinter as ctk
 import tkinter as tk
 from PIL import Image, ImageTk
 #cripto
-from cryptography.fernet import Fernet
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
+from hashlib import sha256
 #banco
 import mysql.connector
 janela = ctk.CTk()
@@ -54,25 +49,13 @@ class Application():
 
         def on_login_button_click(event):
             # Gerar um par de chaves RSA (chave pública e privada)
-            private_key = rsa.generate_private_key(
-                public_exponent=65537,
-                key_size=2048
-            )
-            public_key = private_key.public_key()
-
-            # Preparar a senha digitada para criptografia
-            senha = senha_entry.get()
-            senha_bytes = senha.encode('utf-8')
-
-            encrypted_password = public_key.encrypt(
-                senha_bytes,
-                padding.PKCS1v15()
-            )
+            
             #email comparação
             
             # Simulação: Suponha que 'encrypted_password' é o valor criptografado armazenado no banco de dados
-            
-            senha = encrypted_password
+            senha = senha_entry.get()
+            senha = sha256(senha.encode())
+            senha = senha.hexdigest()
             # Simulação: Obtendo o email do campo de entrada
             email = Email_entry.get()
             

@@ -3,11 +3,7 @@ from cryptography.fernet import Fernet
 import mysql.connector
 import random
 #imposts criptografia
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
+from hashlib import sha256
 
 comf = 0;
 janela = ctk.CTk()
@@ -172,20 +168,8 @@ class Application():
             comf = valida()
             
             if comf == 1:
-                private_key = rsa.generate_private_key(
-                public_exponent=65537,
-                key_size=2048
-                )
-                public_key = private_key.public_key()
-                senha_bytes = senha1.encode()
- 
-                # Criptografar a senha usando a chave pública RSA
-                encrypted_password = public_key.encrypt(
-                senha_bytes,
-                padding.PKCS1v15()
-                )
-                senha = encrypted_password
-                
+                senha = sha256(senha1.encode())
+                senha = senha.hexdigest()
                 def obter_informacoes_usuario():
                     return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha,'Curso':Curso}
 
@@ -208,6 +192,7 @@ class Application():
                         conexao.commit()
                         print("Dados inseridos com sucesso!")
                         print(senha)
+                        janela.destroy()
 
                     except mysql.connector.Error as erro:
                         print(f"Erro ao inserir dados no banco de dados: {erro}")
