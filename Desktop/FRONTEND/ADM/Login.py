@@ -75,7 +75,7 @@ class Application():
                     cursor = conn.cursor()
 
                     # Consulta SQL para verificar se o email existe
-                    sql = "SELECT senha FROM Minerva_Aluno WHERE email = %s"
+                    sql = "SELECT senha FROM Minerva_Professor WHERE email = %s"
                     cursor.execute(sql, (email,))
 
                     # Obter o resultado da consulta

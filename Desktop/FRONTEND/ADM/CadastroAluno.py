@@ -182,18 +182,26 @@ class Application():
                             password="cl*02032005",
                             database="cl201107"
                         )
-
                         cursor = conexao.cursor()
+                        sql = "SELECT senha FROM Minerva_Aluno WHERE email = %s"
+                        cursor.execute(sql, (email,))
 
-                        sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
+                        # Obter o resultado da consulta
+                        result = cursor.fetchone()  # Retorna uma única linha se encontrar
+                    
+                        if result:
+                            label_CAceito.place(x=25,y=1620)
+                            label_errorJE.place(x=25,y=162)
 
-                        cursor.execute(sql, dados)
+                        else:
+                            sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
 
-                        conexao.commit()
-                        print("Dados inseridos com sucesso!")
-                        print(senha)
-                        janela.destroy()
+                            cursor.execute(sql, dados)
 
+                            conexao.commit()
+                            print("Dados inseridos com sucesso!")
+                            print(senha)
+                            janela.destroy()
                     except mysql.connector.Error as erro:
                         print(f"Erro ao inserir dados no banco de dados: {erro}")
                         conexao.rollback()
@@ -226,9 +234,12 @@ class Application():
         #EMAIL
         global label_errorEV#email vazio
         global label_errorSAR#sem @gmail.com
+        global label_errorJE
         label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="Email vazio, coloque um email valido", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
         label_errorSAR = ctk.CTkLabel(master=cadastro_frame, text="sem @gmail, coloque um email valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorJE = ctk.CTkLabel(master=cadastro_frame, text="email já existe", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
         #
         #Cursos
