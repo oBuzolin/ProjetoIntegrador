@@ -43,9 +43,17 @@ class Application():
         senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300,
                                     font=('Roboto', 14), show="*")
         senha_entry.place(x=25, y=135)
-
-        checkbox = ctk.CTkCheckBox(master=login_frame, text="Lembre-se de mim sempre")
-        checkbox.place(x=25, y=195)
+        
+        checkbox_var = ctk.BooleanVar()
+        def toggle_show_password():
+            valor = checkbox_var.get()
+            if valor == True:
+                senha_entry.configure(show="")
+            else:
+                senha_entry.configure(show="*")
+        # Criar a CTkCheckBox e associar com a variável de controle
+        checkbox = ctk.CTkCheckBox(master=login_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
+        checkbox.place(x=25, y=200)
 
         def on_login_button_click(event):
             # Gerar um par de chaves RSA (chave pública e privada)
@@ -77,7 +85,6 @@ class Application():
                     # Consulta SQL para verificar se o email existe
                     sql = "SELECT senha FROM Minerva_Professor WHERE email = %s"
                     cursor.execute(sql, (email,))
-
                     # Obter o resultado da consulta
                     result = cursor.fetchone()  # Retorna uma única linha se encontrar
 
@@ -89,11 +96,29 @@ class Application():
                         if check_password(password, hashed_password_from_db):
                             print(f"Email '{email}' encontrado e a senha está correta.")
                         else:
-                            print(f"Email '{email}' encontrado, mas a senha está incorreta.")
-                            print(senha)
+                            label_errorE.place(x=25,y=1300)
+                            label_errorSV.pack()  
+                            label_errorSV.place(x=25,y=165)
                     else:
-                        print(f"O email '{email}' não foi encontrado no banco de dados.")
+                        sql2 = "SELECT senha FROM Minerva_Administrador WHERE email = %s"
+                        cursor.execute(sql2, (email,))
+                        result = cursor.fetchone()
+                        if result:
+                            # Email encontrado, verificar a senha
+                            hashed_password_from_db = result[0]
 
+                            # Verificar se a senha fornecida corresponde à senha no banco de dados
+                            if check_password(password, hashed_password_from_db):
+                                print(f"Email '{email}' encontrado e a senha está correta.")
+                            else:
+                                label_errorE.place(x=25,y=1300)
+                                label_errorSV.pack()  
+                                label_errorSV.place(x=25,y=165)
+                        else:
+                            label_errorSV.place(x=25,y=1300)
+                            label_errorE.pack()  
+                            label_errorE.place(x=25,y=105)
+                            
                 except mysql.connector.Error as error:
                     print(f"Erro ao conectar ou executar consulta: {error}")
 
@@ -111,7 +136,14 @@ class Application():
             check_email_and_password(email, senha)
 
         login_button = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
-        login_button.place(x=25, y=255)
+        login_button.place(x=25, y=235)
         login_button.bind("<Button-1>", on_login_button_click)
-
+        #senha errado
+        global label_errorSV
+        label_errorSV = ctk.CTkLabel(master=login_frame, text="senha invalida", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #email errado
+        global label_errorE
+        label_errorE = ctk.CTkLabel(master=login_frame, text="email invalido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
 Application()

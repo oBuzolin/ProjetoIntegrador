@@ -28,36 +28,36 @@ class Application():
         janela.resizable(False, False)
 
     def telaCadastroAluno(self):
-        titulo_label = ctk.CTkLabel(master=janela, text="Cadastre-se como aluno \n na plataforma",
+        titulo_label = ctk.CTkLabel(master=janela, text="Cadastre-se como professor \n na plataforma",
                                     font=("Roboto", 20), text_color="#00B0F0")
         titulo_label.place(x=50, y=10)
 
         cadastro_frame = ctk.CTkFrame(master=janela, width=350, height=396)
         cadastro_frame.pack(side=ctk.RIGHT)
 
-        label = ctk.CTkLabel(master=cadastro_frame, text="Cadastro de Aluno", font=('Arial', 20, 'bold'),
+        label = ctk.CTkLabel(master=cadastro_frame, text="Cadastro de Professor", font=('Arial', 20, 'bold'),
                              text_color=('white'))
         label.place(x=25, y=5)
 
         nome_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Nome", width=300,
                                   font=('Roboto', 14))
-        nome_entry.place(x=25, y=70)
+        nome_entry.place(x=25, y=45)
 
         email_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Email", width=300,
                                    font=('Roboto', 14))
-        email_entry.place(x=25, y=115)
+        email_entry.place(x=25, y=103)
 
-        curso_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=300,
+        curso_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="diciplina", width=300,
                                    font=('Roboto', 14))
-        curso_entry.place(x=25, y=160)
+        curso_entry.place(x=25, y=161)
 
-        CargH_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=145,
+        CargH_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="carga horaria", width=145,
                                    font=('Roboto', 14))
-        CargH_entry.place(x=25, y=205)
+        CargH_entry.place(x=25, y=219)
         
-        DiaS_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="curso", width=145,
+        DiaS_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="quantidade de dias de trabalho por semana", width=145,
                                    font=('Roboto', 14))
-        DiaS_entry.place(x=180, y=205)
+        DiaS_entry.place(x=180, y=219)
 
         checkbox_var = ctk.BooleanVar()
         def toggle_show_password():
@@ -68,11 +68,11 @@ class Application():
                 senha_entry.configure(show="*")
         # Criar a CTkCheckBox e associar com a variável de controle
         checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
-        checkbox.place(x=25, y=300)
+        checkbox.place(x=25, y=315)
 
         # Criar a CTkEntry para a senha
         senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300, font=('Roboto', 14), show="*")
-        senha_entry.place(x=25, y=250)
+        senha_entry.place(x=25, y=275)
         
         
         global nome1
@@ -99,7 +99,7 @@ class Application():
                 label_errorSS.place(x=25,y=1007)
                 label_NAceito.place(x=25,y=1007)
                 label_errorNV.pack()  
-                label_errorNV.place(x=25,y=107)
+                label_errorNV.place(x=25,y=74)
                 comf = 0
 
             else:  # Esconde mensagem de erro se nome for válido
@@ -111,96 +111,104 @@ class Application():
                 if contagem < 2:
                     label_NAceito.place(x=25,y=1007)
                     label_errorSS.pack()  
-                    label_errorSS.place(x=25,y=107)
+                    label_errorSS.place(x=25,y=74)
                     comf = 0
                 else:
                     label_errorSS.place(x=25,y=1007)
                     label_NAceito.pack()  
-                    label_NAceito.place(x=25,y=107)
+                    label_NAceito.place(x=25,y=74)
                     if not email:
                         label_errorSAR.place(x=25,y=1620)
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.pack()  
-                        label_errorEV.place(x=25,y=162)
+                        label_errorEV.place(x=25,y=130)
                         comf = 0
                     else:
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.place(x=25,y=1620)
                         if not "@gmail.com" in email:
                             label_errorSAR.pack()  
-                            label_errorSAR.place(x=25,y=162)
+                            label_errorSAR.place(x=25,y=130)
                             comf = 0
                         else:
                             label_errorSAR.place(x=25,y=1620)
                             label_errorEV.place(x=25,y=1620)
                             label_EAceito.pack()  
-                            label_EAceito.place(x=25,y=162)
+                            label_EAceito.place(x=25,y=130)
                             if not Curso:
                                 label_errorCM8.place(x=25,y=1620)
                                 label_CAceito.place(x=25,y=1620)
                                 label_errorCV.pack()  
-                                label_errorCV.place(x=25,y=217)
+                                label_errorCV.place(x=25,y=190)
                                 comf = 0
                             else:
                                 label_CAceito.place(x=25,y=1620)
                                 label_errorCV.place(x=25,y=1620)
                                 if len(Curso) < 8:
                                     label_errorCM8.pack()  
-                                    label_errorCM8.place(x=25,y=217)
+                                    label_errorCM8.place(x=25,y=190)
                                     comf = 0
                                 else:
+                                    label_errorCM8.place(x=25,y=1620)
+                                    label_errorCV.place(x=25,y=1620)
+                                    label_CAceito.pack()  
+                                    label_CAceito.place(x=25,y=190)
                                     if not CargH:
-                                      label_errorCM8.place(x=25,y=1620)
-                                      label_CAceito.place(x=25,y=1620)
-                                      label_errorCV.pack()  
-                                      label_errorCV.place(x=25,y=217)
+                                      label_errorCHMO.place(x=25,y=1620)
+                                      label_CHAceito.place(x=25,y=1620)
+                                      label_errorCHV.pack()  
+                                      label_errorCHV.place(x=25,y=246)
                                       comf = 0
                                     else:
-                                      label_CAceito.place(x=25,y=1620)
-                                      label_errorCV.place(x=25,y=1620)
+                                      label_CHAceito.place(x=25,y=1620)
+                                      label_errorCHV.place(x=25,y=1620)
                                       if len(CargH) < 8:
                                           label_errorCM8.pack()  
-                                          label_errorCM8.place(x=25,y=217)
+                                          label_errorCM8.place(x=25,y=250)
                                           comf = 0
-                                          label_errorCV.place(x=25,y=1620)
-                                          label_errorCM8.place(x=25,y=1620)
-                                          label_CAceito.pack()  
-                                          label_CAceito.place(x=25,y=217)
                                       else:
-                                        if not Curso:
-                                          label_errorCM8.place(x=25,y=1620)
-                                          label_CAceito.place(x=25,y=1620)
-                                          label_errorCV.pack()  
-                                          label_errorCV.place(x=25,y=217)
+                                        label_errorCHMO.place(x=25,y=1620)
+                                        label_errorCHV.place(x=25,y=1620)
+                                        label_CHAceito.pack()  
+                                        label_CHAceito.place(x=25,y=250)
+                                        if not DiaS:
+                                          label_errorCHMO.place(x=25,y=1620)
+                                          label_CHAceito.place(x=25,y=1620)
+                                          label_errorCHV.pack()  
+                                          label_errorCHV.place(x=180,y=217)
                                           comf = 0
                                         else:
-                                            label_CAceito.place(x=25,y=1620)
-                                            label_errorCV.place(x=25,y=1620)
-                                            if len(Curso) < 8:
-                                                label_errorCM8.pack()  
-                                                label_errorCM8.place(x=25,y=217)
+                                            label_errorCHV.place(x=25,y=1620)
+                                            label_CHAceito.place(x=25,y=1620)
+                                            if len(DiaS) < 8:
+                                                label_errorCHMO.pack()  
+                                                label_errorCHMO.place(x=180,y=217)
                                                 comf = 0
                                             else:
-                                              if not senha1:
-                                                  label_errorCM8.place(x=25,y=1620)
-                                                  label_SAceito.place(x=25,y=1620)
-                                                  label_errorSV.pack()  
-                                                  label_errorSV.place(x=25,y=272)
-                                                  comf = 0
-                                              else:
-                                                  label_SAceito.place(x=25,y=1620)
-                                                  label_errorSV.place(x=25,y=1620)
-                                                  if len(senha1) < 8:
-                                                      label_errorSM8.pack()  
-                                                      label_errorSM8.place(x=25,y=272)
-                                                      comf = 0
-                                                  else:
-                                                      label_errorSV.place(x=25,y=1620)
-                                                      label_errorSM8.place(x=25,y=1620)
-                                                      label_SAceito.pack()  
-                                                      label_SAceito.place(x=25,y=272)
-                                                      comf = 1
-                                                      return comf
+                                                label_errorCHMO.place(x=25,y=1620)
+                                                label_errorCHV.place(x=25,y=1620)
+                                                label_CHAceito.pack()  
+                                                label_CHAceito.place(x=25,y=250)
+                                                if not senha1:
+                                                    label_errorSM8.place(x=25,y=1620)
+                                                    label_SAceito.place(x=25,y=1620)
+                                                    label_errorSV.pack()  
+                                                    label_errorSV.place(x=150,y=315)
+                                                    comf = 0
+                                                else:
+                                                    label_SAceito.place(x=25,y=1620)
+                                                    label_errorSV.place(x=25,y=1620)
+                                                    if len(senha1) < 8:
+                                                        label_errorSM8.pack()  
+                                                        label_errorSM8.place(x=150,y=315)
+                                                        comf = 0
+                                                    else:
+                                                        label_errorSV.place(x=25,y=1620)
+                                                        label_errorSM8.place(x=25,y=1620)
+                                                        label_SAceito.pack()  
+                                                        label_SAceito.place(x=150,y=315)
+                                                        comf = 1
+                                                        return comf
     # função de cadastro
         def on_login_button_click(event):
             valida()
@@ -266,9 +274,9 @@ class Application():
         #NOME
         global label_errorNV#nome vazio
         global label_errorSS#sem sobrenome
-        label_errorNV = ctk.CTkLabel(master=cadastro_frame, text="nome vazio, coloque um nome valido", font=('Arial', 9, 'bold'),
-                                     text_color=('red'))
-        label_errorSS = ctk.CTkLabel(master=cadastro_frame, text="sem sobrenome, coloque um nome valido", font=('Arial', 9, 'bold'),
+        label_errorNV = ctk.CTkLabel(master=cadastro_frame, text="nome vazio, coloque um nome valido", font=('Arial', 9, ),
+                                     text_color=('red'),fg_color=None)
+        label_errorSS = ctk.CTkLabel(master=cadastro_frame, text="sem sobrenome, coloque um nome valido", font=('Arial', 9, ),
                                      text_color=('red'))
         #
         #EMAIL
@@ -290,6 +298,16 @@ class Application():
         label_errorCM8 = ctk.CTkLabel(master=cadastro_frame, text="curso com menos de 8 caracteres, coloque um Curso valido", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
         #
+        
+        #carga horaria/ dias por semana
+        global label_errorCHV#curso vazio
+        global label_errorCHMO# menos de oito caracter
+        label_errorCHV = ctk.CTkLabel(master=cadastro_frame, text="vazio, coloque um valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        label_errorCHMO = ctk.CTkLabel(master=cadastro_frame, text="menos de 8 caracteres, coloque um valido", font=('Arial', 9, 'bold'),
+                                     text_color=('red'))
+        #
+        #
         #senhas
         global label_errorSV#curso vazio
         global label_errorSM8# menos de oito caracter
@@ -303,7 +321,13 @@ class Application():
         global label_EAceito#Email
         global label_CAceito#Curso
         global label_SAceito#senha
-        label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="nome valido", font=('Arial', 9, 'bold'),
+        global label_DAceito#DIas
+        global label_CHAceito#Carga
+        label_CHAceito = ctk.CTkLabel(master=cadastro_frame, text="Carga horaria valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+        label_DAceito = ctk.CTkLabel(master=cadastro_frame, text="Dias de semana valido", font=('Arial', 9, 'bold'),
+                                     text_color=('green'))
+        label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="Nome valido", font=('Arial', 9, 'bold'),
                                      text_color=('green'))
         label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="email valido", font=('Arial', 9, 'bold'),
                                      text_color=('green'))
