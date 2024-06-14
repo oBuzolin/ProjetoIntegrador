@@ -6,6 +6,7 @@ from PIL import Image, ImageTk
 from hashlib import sha256
 #banco
 import mysql.connector
+import os
 janela = ctk.CTk()
 
 class Application():
@@ -94,7 +95,11 @@ class Application():
 
                         # Verificar se a senha fornecida corresponde à senha no banco de dados
                         if check_password(password, hashed_password_from_db):
-                            print(f"Email '{email}' encontrado e a senha está correta.")
+                            with open('Desktop\FRONTEND\ADM\home.py', 'r') as f:
+                                adm = f.read()
+                                exec(adm)
+                                janela.quit() 
+                                janela.destroy()
                         else:
                             label_errorE.place(x=25,y=1300)
                             label_errorSV.pack()  
