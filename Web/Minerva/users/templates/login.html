@@ -1,0 +1,44 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Minerva Estudo - Login</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script class="alert alert-warning d-flex align-items-center" role="alert">
+            {% if messages %}
+                {% for message in messages %}
+                    alert('{{message}}')
+                {% endfor %}
+            {% endif %}
+        </script>
+    </head>
+    <body>
+        <div class="center">
+            <div class="login">
+                <div class="left">
+                    <h2 class="h2">Sistema de Login</h2>
+                    <h4 class="h4">Use aqui o login que recebeu em seu email!</h4>
+                </div>
+                <div class="right">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <label for="validationCustom02" class="form-label" style="color:white;">{{ usuario }}</label>
+                        <input type="email" name="usuario" id="usuario" class="usuario" placeholder='Seu E-mail' required>
+    
+                        <label for="senha" style="color:white;">{{ senha }}</label>
+                        <br><input type="password" name="senha" id="senha" class="senha" placeholder='Sua senha' >
+     
+                        <br><input type="submit" value="Login" class="btn-login"></button>
+                        
+                        <br><button><i class="bi bi-envelope-at"></i>  Conecte-se ao Google</button>
+                    </form>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>

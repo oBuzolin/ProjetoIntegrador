@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* ----------------------------------------------- CSS DA TELA DE LOGIN --------------------------------------------------------- */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #ccc;
+    background-image: url("../images/greciafundo.jpg");
+    opacity: 1.2;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+.center {
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    /* /* height: 80%; */
+    /* background-color: #ccc;
+       border: 1px solid black; */ 
+    border-radius: 0.5vh;
+}
+
+.left {
+    flex: 1;
+    padding: 2vh;
+    margin-left: 15vh;
+}
+
+.right {
+    flex: 1;
+    padding: 2vh;
+    margin-right: 15vh;
+}
+
+/* .image-login {
+    width: 50%;
+    height: 50%;
+    border-radius: 0.5vh;
+} */
+
+input[type=email]{
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=password]{
+width: 100%;
+padding: 12px 20px;
+font-size: 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+input[type=submit] {
+width: 100%;
+background-color: #4CAF50;
+color: white;
+font-size: 20px;
+padding: 14px 20px;
+margin: 8px 0;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+input[type=submit]:hover {
+background-color: #45a049;
+}
+
+button {
+width: 100%;
+background-color: #F50;
+color: white;
+font-size: 20px;
+padding: 14px 20px;
+margin: 8px 0;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+button:hover {
+background-color: rgb(255, 64, 0);
+}
+
+.h2{
+    color:white;
+    text-shadow: 1px 1px 2px black;
+    font-size: 40px;
+    font-weight: bold;
+    /* background-color:black;  */
+}
+
+.h4{
+    color:white;
+    text-shadow: 1px 1px 2px black;
+    font-size: 20px;
+    font-weight: bold;
+    /* background-color:black;  */
+}
