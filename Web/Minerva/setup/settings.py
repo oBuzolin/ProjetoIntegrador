@@ -27,12 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap5',
 
     # Meus APP
     'users',
     'professor',
     'aluno',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,8 +70,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'cl201107',  # Nome do seu banco de dados MySQL
-        'USER': '',  # Seu usuário do MySQL
-        'PASSWORD': '',  # Sua senha do MySQL
+        'USER': 'cl201107',  # Seu usuário do MySQL
+        'PASSWORD': 'cl*02032005',  # Sua senha do MySQL
         'HOST': '143.106.241.3',  # Geralmente 'localhost'
         'PORT': '3306',  # Porta padrão do MySQL
     }
