@@ -28,7 +28,7 @@ frame1 = ctk.CTkFrame(master=janela_main, width=225, height=595, bg_color='#4044
 frame1.place(x=10, y=40)
 
 button = ctk.CTkButton(master=frame1, text="Agenda", text_color="white", width=210, height=40, fg_color='#F04747', bg_color="#7289DA", corner_radius=5)  # Vermelho e azul do Discord
-button.place(x=16, y=46)
+button.place(x=8, y=10)
 
 # Exemplos de visualização de turmas
 x_positions = [250, 485, 720]
