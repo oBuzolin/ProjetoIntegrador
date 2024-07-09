@@ -3,7 +3,6 @@ from cryptography.fernet import Fernet
 import mysql.connector
 import random
 from hashlib import sha256
-
 comf = 0
 janela = ctk.CTk()
 
@@ -20,7 +19,7 @@ class Application:
         ctk.set_default_color_theme("dark-blue")
 
     def tela(self):
-        janela.geometry("700x400")
+        janela.geometry("700x450")
         janela.title("Cadastro de Aluno")
         janela.resizable(False, False)
 
@@ -95,6 +94,7 @@ class Application:
                     label_errorSS.place(x=25, y=1007)
                     label_NAceito.place(x=25, y=74)
                     if not email:
+                        label_EAceito.place(x=25, y=1300)
                         label_errorEV.place(x=25, y=130)
                         comf = 0
                     else:
@@ -121,23 +121,23 @@ class Application:
                                         comf = 0
                                     else:
                                         label_errorCHV.place(x=25, y=1620)
-                                        if len(CargH) < 8:
-                                            label_errorCHMO.place(x=25, y=250)
+                                        if len(CargH) > 2:
+                                            label_errorCHMO.place(x=25, y=246)
                                             comf = 0
                                         else:
                                             label_errorCHMO.place(x=25, y=1620)
-                                            label_CHAceito.place(x=25, y=250)
+                                            label_CHAceito.place(x=25, y=246)
                                             if not DiaS:
-                                                label_errorCHV.place(x=180, y=217)
+                                                label_errorCHV.place(x=180, y=246)
                                                 comf = 0
                                             else:
                                                 label_errorCHV.place(x=25, y=1620)
-                                                if len(DiaS) < 8:
-                                                    label_errorCHMO.place(x=180, y=217)
+                                                if len(DiaS) > 1:
+                                                    label_errorCHMO.place(x=180, y=246)
                                                     comf = 0
                                                 else:
                                                     label_errorCHMO.place(x=25, y=1620)
-                                                    label_CHAceito.place(x=25, y=250)
+                                                    label_CHAceito.place(x=25, y=246)
                                                     if not senha1:
                                                         label_errorSV.place(x=150, y=315)
                                                         comf = 0
@@ -183,7 +183,6 @@ class Application:
                             cursor.execute(sql, dados)
                             conexao.commit()
                             print("Dados inseridos com sucesso!")
-                            print(senha)
                             janela.destroy()
                     except mysql.connector.Error as erro:
                         print(f"Erro ao inserir dados no banco de dados: {erro}")
@@ -215,8 +214,8 @@ class Application:
 
         label_errorCV = ctk.CTkLabel(master=cadastro_frame, text="Curso vazio, coloque um Curso válido", font=('Arial', 9), text_color='red')
         label_errorCM8 = ctk.CTkLabel(master=cadastro_frame, text="Coloque uma Curso maior", font=('Arial', 9), text_color='red')
-        label_errorCHV = ctk.CTkLabel(master=cadastro_frame, text="Quantidade de dias de trabalho por semana vazio, coloque uma carga horária válida", font=('Arial', 9), text_color='red')
-        label_errorCHMO = ctk.CTkLabel(master=cadastro_frame, text="Quantidade de dias de trabalho por semana inválida", font=('Arial', 9), text_color='red')
+        label_errorCHV = ctk.CTkLabel(master=cadastro_frame, text="vazia, inválida", font=('Arial', 9), text_color='red')
+        label_errorCHMO = ctk.CTkLabel(master=cadastro_frame, text="Quantidade de caracter inválida", font=('Arial', 9), text_color='red')
 
         label_errorSV = ctk.CTkLabel(master=cadastro_frame, text="Senha vazia, coloque uma senha válida", font=('Arial', 9), text_color='red')
         label_errorSM8 = ctk.CTkLabel(master=cadastro_frame, text="Senha pequena, menor que 8 caracteres", font=('Arial', 9), text_color='red')
@@ -224,7 +223,7 @@ class Application:
         label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="Nome aceito", font=('Arial', 9), text_color='green')
         label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="Email aceito", font=('Arial', 9), text_color='green')
         label_CAceito = ctk.CTkLabel(master=cadastro_frame, text="Curso aceito", font=('Arial', 9), text_color='green')
-        label_CHAceito = ctk.CTkLabel(master=cadastro_frame, text="Quantidade de dias de trabalho por semana aceito", font=('Arial', 9), text_color='green')
+        label_CHAceito = ctk.CTkLabel(master=cadastro_frame, text="dias aceito", font=('Arial', 9), text_color='green')
         label_SAceito = ctk.CTkLabel(master=cadastro_frame, text="Senha aceita", font=('Arial', 9), text_color='green')
         label_DAceito = ctk.CTkLabel(master=cadastro_frame, text="Carga horária aceita", font=('Arial', 9), text_color='green')
 

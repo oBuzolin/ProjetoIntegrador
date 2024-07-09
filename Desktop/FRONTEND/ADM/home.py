@@ -1,5 +1,8 @@
 import customtkinter as ctk
 import os
+
+
+
 with open('email.txt', 'r') as file:
     minha_variavel = file.read()
 
@@ -10,6 +13,9 @@ if os.path.exists(arquivo):
     print(f'Arquivo {arquivo} excluído com sucesso.')
 else:
     print(f'O arquivo {arquivo} não existe.')
+    
+    
+    
 # Criação da janela principal
 janela_main = ctk.CTk()
 janela_main.title("Tela ADM")
