@@ -73,9 +73,14 @@ class Application:
 
                     if result:
                         if password == result[0]:
+                            minha_variavel = email_entry.get().strip()
+
+                            with open('email.txt', 'w') as file:
+                                file.write(minha_variavel)
                             self.janela.quit()
                             self.janela.destroy()
-                            os.system('python Desktop/FRONTEND/ADM/home.py')
+                           
+                            os.system('Desktop\FRONTEND\ADM\home.py')
                         else:
                             mostrar_erro_senha()
                     else:
