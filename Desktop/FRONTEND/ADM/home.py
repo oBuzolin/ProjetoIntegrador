@@ -1,20 +1,141 @@
 import customtkinter as ctk
 import os
+import mysql.connector
+from mysql.connector import Error
 
+# Função para ler o email do arquivo
+def ler_email(arquivo):
+    try:
+        with open(arquivo, 'r') as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        print(f"Arquivo {arquivo} não encontrado.")
+        return None
 
+# Função para remover o arquivo
+def remover_arquivo(arquivo):
+    if os.path.exists(arquivo):
+        os.remove(arquivo)
+        print(f'Arquivo {arquivo} excluído com sucesso.')
+    else:
+        print(f'O arquivo {arquivo} não existe.')
 
-with open('email.txt', 'r') as file:
-    minha_variavel = file.read()
+# Função para obter dados do professor
+def obter_dados_professor(email, cursor):
+    queries_professor = {
+        'nome': "SELECT Nome FROM Minerva_Professor WHERE email = %s",
+        'disciplina': "SELECT Disciplina FROM Minerva_Professor WHERE email = %s",
+        'carga_horaria': "SELECT CargaHoraria FROM Minerva_Professor WHERE email = %s",
+        'dias_semana': "SELECT DiasSemana FROM Minerva_Professor WHERE email = %s",
+        'ra': "SELECT RA FROM Minerva_Professor WHERE email = %s"
+    }
 
-print(minha_variavel)
-arquivo = 'email.txt'
-if os.path.exists(arquivo):
-    os.remove(arquivo)
-    print(f'Arquivo {arquivo} excluído com sucesso.')
+    dados_professor = {}
+    for key, query in queries_professor.items():
+        cursor.execute(query, (email,))
+        result = cursor.fetchone()
+        if result:
+            dados_professor[key] = result[0]
+        else:
+            dados_professor[key] = None
+
+    if dados_professor['nome']:
+        return dados_professor
+    else:
+        return None
+
+# Função para obter dados do administrador
+def obter_dados_administrador(email, cursor):
+    queries_administrador = {
+        'nome': "SELECT Nome FROM Minerva_Administrador WHERE email = %s",
+        'cargo': "SELECT Cargo FROM Minerva_Administrador WHERE email = %s"
+    }
+
+    dados_administrador = {}
+    for key, query in queries_administrador.items():
+        cursor.execute(query, (email,))
+        result = cursor.fetchone()
+        if result:
+            dados_administrador[key] = result[0]
+        else:
+            dados_administrador[key] = None
+
+    if dados_administrador['nome']:
+        return dados_administrador
+    else:
+        return None
+
+# Configurações de conexão ao banco de dados
+host = '143.106.241.3'
+port = '3306'
+user = 'cl201107'
+password = 'cl*02032005'
+database = 'cl201107'
+arquivo_email = 'email.txt'
+
+# Lê o email do arquivo e remove o arquivo
+minha_variavel = ler_email(arquivo_email)
+if minha_variavel:
+    print(f"Email lido: {minha_variavel}")
+    remover_arquivo(arquivo_email)
+
+    try:
+        # Conecta ao banco de dados
+        conn = mysql.connector.connect(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        if conn.is_connected():
+            print("Conexão bem-sucedida ao banco de dados")
+            cursor = conn.cursor()
+
+            # Tenta obter os dados do professor
+            dados_professor = obter_dados_professor(minha_variavel, cursor)
+            
+            if dados_professor:
+                # Se encontrar, imprime os dados do professor
+                nome = dados_professor['nome']
+                disciplina = dados_professor['disciplina']
+                carga_horaria = dados_professor['carga_horaria']
+                dias_semana = dados_professor['dias_semana']
+                ra = dados_professor['ra']
+
+                print(f'Nome: {nome}')
+                print(f'Disciplina: {disciplina}')
+                print(f'Carga Horária: {carga_horaria}')
+                print(f'Dias da Semana: {dias_semana}')
+                print(f'RA: {ra}')
+            else:
+                # Se não encontrar, tenta obter os dados do administrador
+                dados_administrador = obter_dados_administrador(minha_variavel, cursor)
+
+                if dados_administrador:
+                    
+                    nome = dados_administrador['nome']
+                    cargo = dados_administrador['cargo']
+
+                    print(f'Nome: {nome}')
+                    print(f'Cargo: {cargo}')
+                else:
+                    print(f"Nenhum resultado encontrado para o email {minha_variavel}")
+
+            cursor.close()
+
+    except Error as e:
+        print(f"Erro ao conectar ao MySQL: {e}")
+
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+            print("Conexão ao MySQL foi fechada")
 else:
-    print(f'O arquivo {arquivo} não existe.')
-    
-    
+    print("Não foi possível ler o email do arquivo.")
+
+
     
 # Criação da janela principal
 janela_main = ctk.CTk()
