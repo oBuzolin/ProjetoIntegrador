@@ -2,6 +2,8 @@ import customtkinter as ctk
 import os
 import mysql.connector
 from mysql.connector import Error
+from PIL import Image, ImageTk
+
 
 # Função para ler o email do arquivo
 def ler_email(arquivo):
@@ -147,18 +149,36 @@ janela_main.resizable(width=False, height=False)
 ctk.set_appearance_mode("Dark")  # Modo escuro para uma aparência moderna
 
 # Menu superior
-menu = ctk.CTkFrame(master=janela_main, width=990, height=30, corner_radius=10)
+menu = ctk.CTkFrame(master=janela_main, width=990, height=35, corner_radius=10)
 menu.place(x=5, y=1)
 
 # Exemplos de submenus
 submenus = [
-    ctk.CTkFrame(master=menu, width=55, height=30, fg_color='#2C2F33', corner_radius=5),  # Cor cinza escuro
-    ctk.CTkFrame(master=menu, width=140, height=30, fg_color='#2C2F33', corner_radius=5),  # Cor cinza escuro
-    ctk.CTkFrame(master=menu, width=40, height=30, fg_color='#2C2F33', corner_radius=5)    # Cor cinza escuro
+    ctk.CTkFrame(master=menu, width=55, height=15, fg_color='#2C2F33', corner_radius=5),  # Cor cinza escuro
+    ctk.CTkFrame(master=menu, width=140,height=15, fg_color='#2C2F33', corner_radius=5),  # Cor cinza escuro
+    ctk.CTkFrame(master=menu, width=40, height=15, fg_color='#2C2F33', corner_radius=5)    # Cor cinza escuro
 ]
-x_positions = [6, 65, 960]
+x_positions = [6, 65, 950]
 for index, submenu in enumerate(submenus):
     submenu.place(x=x_positions[index], y=2)
+# Carregar a imagem do ícone
+icon_path = "Desktop\FRONTEND\img\foto2.png"  # Substitua pelo caminho real do seu ícone
+icon_image = ctk.CTkImage(light_image=Image.open(icon_path), size=(20, 20))
+
+# Adicionando ícone ao primeiro frame
+icon_label = ctk.CTkLabel(submenus[0], text='', image=icon_image)
+icon_label.pack(padx=0, pady=0)
+
+# Adicionando texto ao segundo frame
+font = ctk.CTkFont(family="Cloister Black", size=14)
+text_label = ctk.CTkLabel(submenus[1], text='Minerva', text_color='white',font=font)
+text_label.pack(padx=0, pady=0)
+
+# Adicionando botão redondo ao terceiro frame
+letra = nome[0]
+font = ctk.CTkFont(family="Cloister Black", size=14)
+round_button = ctk.CTkButton(submenus[2], text=letra, width=28, height=28, corner_radius=20, fg_color='blue', font=font)
+round_button.pack(padx=0, pady=0)
 
 # Botão "Agenda"
 frame1 = ctk.CTkFrame(master=janela_main, width=225, height=595, bg_color='#40444B', corner_radius=10)  # Cor de fundo mais escura
