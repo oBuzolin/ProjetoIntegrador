@@ -4,7 +4,6 @@ import mysql.connector
 from mysql.connector import Error
 from PIL import Image, ImageTk
 
-
 # Função para ler o email do arquivo
 def ler_email(arquivo):
     try:
@@ -36,15 +35,9 @@ def obter_dados_professor(email, cursor):
     for key, query in queries_professor.items():
         cursor.execute(query, (email,))
         result = cursor.fetchone()
-        if result:
-            dados_professor[key] = result[0]
-        else:
-            dados_professor[key] = None
+        dados_professor[key] = result[0] if result else None
 
-    if dados_professor['nome']:
-        return dados_professor
-    else:
-        return None
+    return dados_professor if dados_professor['nome'] else None
 
 # Função para obter dados do administrador
 def obter_dados_administrador(email, cursor):
@@ -57,15 +50,9 @@ def obter_dados_administrador(email, cursor):
     for key, query in queries_administrador.items():
         cursor.execute(query, (email,))
         result = cursor.fetchone()
-        if result:
-            dados_administrador[key] = result[0]
-        else:
-            dados_administrador[key] = None
+        dados_administrador[key] = result[0] if result else None
 
-    if dados_administrador['nome']:
-        return dados_administrador
-    else:
-        return None
+    return dados_administrador if dados_administrador['nome'] else None
 
 # Configurações de conexão ao banco de dados
 host = '143.106.241.3'
@@ -76,9 +63,9 @@ database = 'cl201107'
 arquivo_email = 'email.txt'
 
 # Lê o email do arquivo e remove o arquivo
-minha_variavel = ler_email(arquivo_email)
-if minha_variavel:
-    print(f"Email lido: {minha_variavel}")
+email = ler_email(arquivo_email)
+if email:
+    print(f"Email lido: {email}")
     remover_arquivo(arquivo_email)
 
     try:
@@ -96,34 +83,24 @@ if minha_variavel:
             cursor = conn.cursor()
 
             # Tenta obter os dados do professor
-            dados_professor = obter_dados_professor(minha_variavel, cursor)
+            dados_professor = obter_dados_professor(email, cursor)
             
             if dados_professor:
-                # Se encontrar, imprime os dados do professor
-                nome = dados_professor['nome']
-                disciplina = dados_professor['disciplina']
-                carga_horaria = dados_professor['carga_horaria']
-                dias_semana = dados_professor['dias_semana']
-                ra = dados_professor['ra']
-
-                print(f'Nome: {nome}')
-                print(f'Disciplina: {disciplina}')
-                print(f'Carga Horária: {carga_horaria}')
-                print(f'Dias da Semana: {dias_semana}')
-                print(f'RA: {ra}')
+                # Imprime os dados do professor
+                print(f'Nome: {dados_professor["nome"]}')
+                print(f'Disciplina: {dados_professor["disciplina"]}')
+                print(f'Carga Horária: {dados_professor["carga_horaria"]}')
+                print(f'Dias da Semana: {dados_professor["dias_semana"]}')
+                print(f'RA: {dados_professor["ra"]}')
             else:
-                # Se não encontrar, tenta obter os dados do administrador
-                dados_administrador = obter_dados_administrador(minha_variavel, cursor)
+                # Tenta obter os dados do administrador
+                dados_administrador = obter_dados_administrador(email, cursor)
 
                 if dados_administrador:
-                    
-                    nome = dados_administrador['nome']
-                    cargo = dados_administrador['cargo']
-
-                    print(f'Nome: {nome}')
-                    print(f'Cargo: {cargo}')
+                    print(f'Nome: {dados_administrador["nome"]}')
+                    print(f'Cargo: {dados_administrador["cargo"]}')
                 else:
-                    print(f"Nenhum resultado encontrado para o email {minha_variavel}")
+                    print(f"Nenhum resultado encontrado para o email {email}")
 
             cursor.close()
 
@@ -137,8 +114,6 @@ if minha_variavel:
 else:
     print("Não foi possível ler o email do arquivo.")
 
-
-    
 # Criação da janela principal
 janela_main = ctk.CTk()
 janela_main.title("Tela ADM")
@@ -161,9 +136,10 @@ submenus = [
 x_positions = [6, 65, 950]
 for index, submenu in enumerate(submenus):
     submenu.place(x=x_positions[index], y=2)
+
 # Carregar a imagem do ícone
-icon_path = "Desktop\FRONTEND\img\foto2.png"  # Substitua pelo caminho real do seu ícone
-icon_image = ctk.CTkImage(light_image=Image.open(icon_path), size=(20, 20))
+icon_path = "Desktop/FRONTEND/img/minerva.ico"  # Substitua pelo caminho real do seu ícone
+icon_image = ctk.CTkImage(light_image=Image.open(icon_path), size=(25, 25))
 
 # Adicionando ícone ao primeiro frame
 icon_label = ctk.CTkLabel(submenus[0], text='', image=icon_image)
@@ -175,9 +151,8 @@ text_label = ctk.CTkLabel(submenus[1], text='Minerva', text_color='white',font=f
 text_label.pack(padx=0, pady=0)
 
 # Adicionando botão redondo ao terceiro frame
-letra = nome[0]
-font = ctk.CTkFont(family="Cloister Black", size=14)
-round_button = ctk.CTkButton(submenus[2], text=letra, width=28, height=28, corner_radius=20, fg_color='blue', font=font)
+letra = dados_professor['nome'][0] if dados_professor else ""
+round_button = ctk.CTkButton(submenus[2], text=letra, width=28, height=28, corner_radius=20, fg_color='#585858', font=font)
 round_button.pack(padx=0, pady=0)
 
 # Botão "Agenda"
