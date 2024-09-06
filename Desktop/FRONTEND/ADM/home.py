@@ -3,6 +3,30 @@ import os
 import mysql.connector
 from mysql.connector import Error
 from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+# Função para gerar gráfico de pizza e inseri-lo em um frame com fundo escuro
+def criar_grafico_pizza(frame, dados, labels):
+    fig, ax = plt.subplots(figsize=(1.5, 1.5), dpi=100)  # Reduzi o tamanho do gráfico para 1.5x1.5
+    cores = ['#F04747', '#7289DA', '#2C2F33', '#40444B']  # Cores que combinam com o layout
+    ax.pie(dados, labels=None, colors=cores, startangle=90, autopct='%1.1f%%', wedgeprops={'edgecolor': 'white'})
+    
+    # Fundo escuro para o gráfico
+    fig.patch.set_facecolor('#2C2F33')  # Cor do fundo da figura
+    ax.set_facecolor('#2C2F33')  # Cor do fundo do gráfico
+    ax.axis('equal')  # Assegura que o gráfico seja um círculo
+    
+    # Remover bordas e reduzir espaçamento
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+
+    # Adicionar a legenda no lado direito e em branco
+    ax.legend(labels, loc="center left", bbox_to_anchor=(1, 0.5), facecolor='#2C2F33', labelcolor='white', fontsize=8)
+
+    canvas = FigureCanvasTkAgg(fig, master=frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+
 
 # Função para ler o usuario do arquivo
 def ler_usuario(arquivo):
@@ -162,13 +186,21 @@ frame1.place(x=10, y=40)
 button = ctk.CTkButton(master=frame1, text="Agenda", text_color="white", width=210, height=40, fg_color='#F04747', bg_color="#7289DA", corner_radius=5)  # Vermelho e azul do Discord
 button.place(x=8, y=10)
 
-# Exemplos de visualização de turmas
+# Dados fictícios para os gráficos de pizza
+dados_exemplo = [25, 35, 20, 20]
+labels_exemplo = ["Parte A", "Parte B", "Parte C", "Parte D"]
+
+# Exemplos de visualização de turmas com gráficos de pizza
 x_positions = [250, 485, 720]
 y_positions = [45, 230, 415]
 
 for x in x_positions:
     for y in y_positions:
-        ctk.CTkFrame(master=janela_main, width=225, height=175, fg_color='#2C2F33', corner_radius=10).place(x=x, y=y)  # Cor cinza escuro
+        frame = ctk.CTkFrame(master=janela_main, width=225, height=175, fg_color='#2C2F33', corner_radius=10)
+        frame.place(x=x, y=y)
+        
+        # Adiciona gráfico de pizza ao frame
+        criar_grafico_pizza(frame, dados_exemplo, labels_exemplo)
 
 # Loop principal da janela
 janela_main.mainloop()
