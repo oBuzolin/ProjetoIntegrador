@@ -43,9 +43,9 @@ class Application():
                                   font=('Roboto', 14), corner_radius=10)
         nome_entry.place(x=25, y=80)
 
-        email_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Email", width=300,
+        usuario_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="usuario", width=300,
                                    font=('Roboto', 14), corner_radius=10)
-        email_entry.place(x=25, y=135)
+        usuario_entry.place(x=25, y=135)
 
         curso_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Curso", width=300,
                                    font=('Roboto', 14), corner_radius=10)
@@ -66,20 +66,20 @@ class Application():
         senha_entry.place(x=25, y=245)
         
         global nome1
-        global email
+        global usuario
         global senha
         global Curso
         global RA
 
         def get_dados():
             nome1 = nome_entry.get().strip()
-            email = email_entry.get().strip()
+            usuario = usuario_entry.get().strip()
             senha = senha_entry.get().strip()
             Curso = curso_entry.get().strip()
-            return nome1, email, senha, Curso
+            return nome1, usuario, senha, Curso
         
         def valida():
-            nome, email, senha1, Curso = get_dados()
+            nome, usuario, senha1, Curso = get_dados()
             if not nome:
                 label_errorSS.place(x=25,y=1007)
                 label_NAceito.place(x=25,y=1007)
@@ -99,7 +99,7 @@ class Application():
                     label_errorSS.place(x=25,y=1007)
                     label_NAceito.pack()  
                     label_NAceito.place(x=25,y=107)
-                    if not email:
+                    if not usuario:
                         label_errorSAR.place(x=25,y=1620)
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.pack()  
@@ -108,7 +108,7 @@ class Application():
                     else:
                         label_EAceito.place(x=25,y=1620)
                         label_errorEV.place(x=25,y=1620)
-                        if not "@gmail.com" in email:
+                        if not "@gmail.com" in usuario:
                             label_errorSAR.pack()  
                             label_errorSAR.place(x=25,y=162)
                             comf = 0
@@ -158,7 +158,7 @@ class Application():
 
         def on_login_button_click(event):
             valida()
-            nome, email, senha1, Curso = get_dados()
+            nome, usuario, senha1, Curso = get_dados()
             RA = random.randint(10000, 99999)
             comf = valida()
             
@@ -166,7 +166,7 @@ class Application():
                 senha = sha256(senha1.encode())
                 senha = senha.hexdigest()
                 def obter_informacoes_usuario():
-                    return {'nome': nome, 'RA': RA, 'email': email, 'senha': senha, 'Curso': Curso}
+                    return {'nome': nome, 'RA': RA, 'usuario': usuario, 'senha': senha, 'Curso': Curso}
 
                 def inserir_dados_mysql(dados):
                     try:
@@ -178,8 +178,8 @@ class Application():
                             database="cl201107"
                         )
                         cursor = conexao.cursor()
-                        sql = "SELECT senha FROM Minerva_Aluno WHERE email = %s"
-                        cursor.execute(sql, (email,))
+                        sql = "SELECT senha FROM Minerva_Aluno WHERE usuario = %s"
+                        cursor.execute(sql, (usuario,))
 
                         result = cursor.fetchone()
                     
@@ -187,7 +187,7 @@ class Application():
                             label_CAceito.place(x=25,y=1620)
                             label_errorJE.place(x=25,y=162)
                         else:
-                            sql = "INSERT INTO Minerva_Aluno (Nome, RA, email, senha, Curso) VALUES (%(nome)s, %(RA)s, %(email)s, %(senha)s, %(Curso)s)"
+                            sql = "INSERT INTO Minerva_Aluno (Nome, RA, usuario, senha, Curso) VALUES (%(nome)s, %(RA)s, %(usuario)s, %(senha)s, %(Curso)s)"
                             cursor.execute(sql, dados)
                             conexao.commit()
                             print("Dados inseridos com sucesso!")
@@ -217,15 +217,15 @@ class Application():
         label_errorSS = ctk.CTkLabel(master=cadastro_frame, text="Sem sobrenome, coloque um nome válido", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
 
-        # Email
-        global label_errorEV  # email vazio
+        # usuario
+        global label_errorEV  # usuario vazio
         global label_errorSAR  # sem @gmail.com
         global label_errorJE
-        label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="Email vazio, coloque um email válido", font=('Arial', 9, 'bold'),
+        label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="usuario vazio, coloque um usuario válido", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
-        label_errorSAR = ctk.CTkLabel(master=cadastro_frame, text="Sem @gmail, coloque um email válido", font=('Arial', 9, 'bold'),
+        label_errorSAR = ctk.CTkLabel(master=cadastro_frame, text="Sem @gmail, coloque um usuario válido", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
-        label_errorJE = ctk.CTkLabel(master=cadastro_frame, text="Email já existe", font=('Arial', 9, 'bold'),
+        label_errorJE = ctk.CTkLabel(master=cadastro_frame, text="usuario já existe", font=('Arial', 9, 'bold'),
                                      text_color=('red'))
 
         # Cursos
@@ -246,12 +246,12 @@ class Application():
 
         # Aceito
         global label_NAceito  # nome
-        global label_EAceito  # Email
+        global label_EAceito  # usuario
         global label_CAceito  # Curso
         global label_SAceito  # senha
         label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="Nome válido", font=('Arial', 9, 'bold'),
                                      text_color=('green'))
-        label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="Email válido", font=('Arial', 9, 'bold'),
+        label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="usuario válido", font=('Arial', 9, 'bold'),
                                      text_color=('green'))
         label_CAceito = ctk.CTkLabel(master=cadastro_frame, text="Curso válido", font=('Arial', 9, 'bold'),
                                      text_color=('green'))

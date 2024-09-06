@@ -39,8 +39,8 @@ class Application:
         ctk.CTkLabel(master=login_frame, text="Sistema de Login", font=('Arial', 20, 'bold'),
                      text_color='white').place(x=25, y=5)
 
-        email_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300, font=('Roboto', 14))
-        email_entry.place(x=25, y=75)
+        usuario_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Email", width=300, font=('Roboto', 14))
+        usuario_entry.place(x=25, y=75)
 
         senha_entry = ctk.CTkEntry(master=login_frame, placeholder_text="Senha", width=300, font=('Roboto', 14), show="*")
         senha_entry.place(x=25, y=135)
@@ -54,9 +54,9 @@ class Application:
 
         def on_login_button_click(event):
             senha = sha256(senha_entry.get().encode()).hexdigest()
-            email = email_entry.get()
+            usuario = usuario_entry.get()
 
-            def check_email_and_password(email, password):
+            def check_usuario_and_password(usuario, password):
                 try:
                     conn = mysql.connector.connect(
                         host="143.106.241.3",
@@ -67,15 +67,15 @@ class Application:
                     )
                     cursor = conn.cursor()
 
-                    sql = "SELECT senha FROM Minerva_Professor WHERE email = %s"
-                    cursor.execute(sql, (email,))
+                    sql = "SELECT senha FROM Minerva_Professor WHERE usuario = %s"
+                    cursor.execute(sql, (usuario,))
                     result = cursor.fetchone()
 
                     if result:
                         if password == result[0]:
-                            minha_variavel = email_entry.get().strip()
+                            minha_variavel = usuario_entry.get().strip()
 
-                            with open('email.txt', 'w') as file:
+                            with open('usuario.txt', 'w') as file:
                                 file.write(minha_variavel)
                             self.janela.quit()
                             self.janela.destroy()
@@ -84,20 +84,20 @@ class Application:
                         else:
                             mostrar_erro_senha()
                     else:
-                        sql2 = "SELECT senha FROM Minerva_Administrador WHERE email = %s"
-                        cursor.execute(sql2, (email,))
+                        sql2 = "SELECT senha FROM Minerva_Administrador WHERE usuario = %s"
+                        cursor.execute(sql2, (usuario,))
                         result = cursor.fetchone()
 
                         if result:
                             if password == result[0]:
-                                print(f"Email '{email}' encontrado e a senha está correta.")
+                                print(f"usuario '{usuario}' encontrado e a senha está correta.")
                             else:
-                                label_error_email.place(x=25, y=1005)
+                                label_error_usuario.place(x=25, y=1005)
                                 mostrar_erro_senha()
                                 
                         else:
                             label_error_senha.place(x=25, y=1650)
-                            mostrar_erro_email()
+                            mostrar_erro_usuario()
                             
 
                 except mysql.connector.Error as error:
@@ -108,17 +108,17 @@ class Application:
                     if 'conn' in locals() and conn.is_connected():
                         conn.close()
 
-            def mostrar_erro_email():
-                label_error_email.pack()
-                label_error_email.place(x=25, y=105)
+            def mostrar_erro_usuario():
+                label_error_usuario.pack()
+                label_error_usuario.place(x=25, y=105)
 
             def mostrar_erro_senha():
                 label_error_senha.pack()
                 label_error_senha.place(x=25, y=165)
 
-            label_error_email.pack_forget()
+            label_error_usuario.pack_forget()
             label_error_senha.pack_forget()
-            check_email_and_password(email, senha)
+            check_usuario_and_password(usuario, senha)
 
         login_button = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
         login_button.place(x=25, y=235)
@@ -128,8 +128,8 @@ class Application:
         label_error_senha = ctk.CTkLabel(master=login_frame, text="Senha inválida", font=('Arial', 9, 'bold'),
                                          text_color='red')
 
-        global label_error_email
-        label_error_email = ctk.CTkLabel(master=login_frame, text="Email inválido", font=('Arial', 9, 'bold'),
+        global label_error_usuario
+        label_error_usuario = ctk.CTkLabel(master=login_frame, text="Email inválido", font=('Arial', 9, 'bold'),
                                          text_color='red')
 
         esqueci_senha_button = ctk.CTkButton(master=login_frame, text="Esqueci minha senha", width=300, command=self.telaEsqueciSenha)
@@ -144,14 +144,14 @@ class Application:
         ctk.CTkLabel(master=self.esqueci_senha_toplevel, text="Digite seu email para receber o código de verificação:",
                      font=('Roboto', 14)).pack(pady=20)
 
-        self.email_recuperacao_entry = ctk.CTkEntry(master=self.esqueci_senha_toplevel, placeholder_text="Email", width=300, font=('Roboto', 14))
-        self.email_recuperacao_entry.pack(pady=10)
+        self.usuario_recuperacao_entry = ctk.CTkEntry(master=self.esqueci_senha_toplevel, placeholder_text="Email", width=300, font=('Roboto', 14))
+        self.usuario_recuperacao_entry.pack(pady=10)
 
         enviar_codigo_button = ctk.CTkButton(master=self.esqueci_senha_toplevel, text="Enviar código", command=self.enviar_codigo)
         enviar_codigo_button.pack(pady=10)
 
     def enviar_codigo(self):
-        email = self.email_recuperacao_entry.get()
+        usuario = self.usuario_recuperacao_entry.get()
         codigo = random.randint(100000, 999999)
 
         try:
@@ -164,16 +164,16 @@ class Application:
             )
             cursor = conn.cursor()
 
-            sql = "SELECT email FROM Minerva_Professor WHERE email = %s"
-            cursor.execute(sql, (email,))
+            sql = "SELECT usuario FROM Minerva_Professor WHERE usuario = %s"
+            cursor.execute(sql, (usuario,))
             result = cursor.fetchone()
 
             if result:
-                self.enviar_email(email, codigo)
+                self.enviar_usuario(usuario, codigo)
                 self.tela_codigo_verificacao(codigo)
             else:
-                label_erro_email = ctk.CTkLabel(master=self.esqueci_senha_toplevel, text="Email não encontrado", font=('Arial', 9, 'bold'), text_color='red')
-                label_erro_email.pack(pady=5)
+                label_erro_usuario = ctk.CTkLabel(master=self.esqueci_senha_toplevel, text="Email não encontrado", font=('Arial', 9, 'bold'), text_color='red')
+                label_erro_usuario.pack(pady=5)
         except mysql.connector.Error as error:
             print(f"Erro ao conectar ou executar consulta: {error}")
         finally:
@@ -182,13 +182,13 @@ class Application:
             if 'conn' in locals() and conn.is_connected():
                 conn.close()
 
-    def enviar_email(self, email, codigo):
+    def enviar_usuario(self, usuario, codigo):
         remetente = "minervaembv@gmail.com"
         senha = "a u z q y d f v a w a x m o h a"
         
         msg = MIMEMultipart()
         msg['From'] = remetente
-        msg['To'] = email
+        msg['To'] = usuario
         msg['Subject'] = "Código de Verificação"
         body = f"Seu código de verificação é: {codigo}"
         msg.attach(MIMEText(body, 'plain'))
@@ -198,7 +198,7 @@ class Application:
             server.starttls()
             server.login(remetente, senha)
             text = msg.as_string()
-            server.sendmail(remetente, email, text)
+            server.sendmail(remetente, usuario, text)
             server.quit()
             print("Email enviado com sucesso")
         except Exception as e:
@@ -243,7 +243,7 @@ class Application:
 
     def alterar_senha(self):
         nova_senha = sha256(self.nova_senha_entry.get().encode()).hexdigest()
-        email = self.email_recuperacao_entry.get()
+        usuario = self.usuario_recuperacao_entry.get()
 
         try:
             conn = mysql.connector.connect(
@@ -255,8 +255,8 @@ class Application:
             )
             cursor = conn.cursor()
 
-            sql = "UPDATE Minerva_Professor SET senha = %s WHERE email = %s"
-            cursor.execute(sql, (nova_senha, email))
+            sql = "UPDATE Minerva_Professor SET senha = %s WHERE usuario = %s"
+            cursor.execute(sql, (nova_senha, usuario))
             conn.commit()
 
             label_sucesso = ctk.CTkLabel(master=self.alterar_senha_toplevel, text="Senha alterada com sucesso", font=('Arial', 9, 'bold'), text_color='green')

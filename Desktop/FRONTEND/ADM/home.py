@@ -4,8 +4,8 @@ import mysql.connector
 from mysql.connector import Error
 from PIL import Image, ImageTk
 
-# Função para ler o email do arquivo
-def ler_email(arquivo):
+# Função para ler o usuario do arquivo
+def ler_usuario(arquivo):
     try:
         with open(arquivo, 'r') as file:
             return file.read().strip()
@@ -22,33 +22,33 @@ def remover_arquivo(arquivo):
         print(f'O arquivo {arquivo} não existe.')
 
 # Função para obter dados do professor
-def obter_dados_professor(email, cursor):
+def obter_dados_professor(usuario, cursor):
     queries_professor = {
-        'nome': "SELECT Nome FROM Minerva_Professor WHERE email = %s",
-        'disciplina': "SELECT Disciplina FROM Minerva_Professor WHERE email = %s",
-        'carga_horaria': "SELECT CargaHoraria FROM Minerva_Professor WHERE email = %s",
-        'dias_semana': "SELECT DiasSemana FROM Minerva_Professor WHERE email = %s",
-        'ra': "SELECT RA FROM Minerva_Professor WHERE email = %s"
+        'nome': "SELECT Nome FROM Minerva_Professor WHERE usuario = %s",
+        'disciplina': "SELECT Disciplina FROM Minerva_Professor WHERE usuario = %s",
+        'carga_horaria': "SELECT CargaHoraria FROM Minerva_Professor WHERE usuario = %s",
+        'dias_semana': "SELECT DiaSemana FROM Minerva_Professor WHERE usuario = %s",
+        'ra': "SELECT matricula FROM Minerva_Professor WHERE usuario = %s"
     }
 
     dados_professor = {}
     for key, query in queries_professor.items():
-        cursor.execute(query, (email,))
+        cursor.execute(query, (usuario,))
         result = cursor.fetchone()
         dados_professor[key] = result[0] if result else None
 
     return dados_professor if dados_professor['nome'] else None
 
 # Função para obter dados do administrador
-def obter_dados_administrador(email, cursor):
+def obter_dados_administrador(usuario, cursor):
     queries_administrador = {
-        'nome': "SELECT Nome FROM Minerva_Administrador WHERE email = %s",
-        'cargo': "SELECT Cargo FROM Minerva_Administrador WHERE email = %s"
+        'nome': "SELECT Nome FROM Minerva_Administrador WHERE usuario = %s",
+        'cargo': "SELECT Cargo FROM Minerva_Administrador WHERE usuario = %s"
     }
 
     dados_administrador = {}
     for key, query in queries_administrador.items():
-        cursor.execute(query, (email,))
+        cursor.execute(query, (usuario,))
         result = cursor.fetchone()
         dados_administrador[key] = result[0] if result else None
 
@@ -60,13 +60,13 @@ port = '3306'
 user = 'cl201107'
 password = 'cl*02032005'
 database = 'cl201107'
-arquivo_email = 'email.txt'
+arquivo_usuario = 'usuario.txt'
 
 # Lê o email do arquivo e remove o arquivo
-email = ler_email(arquivo_email)
-if email:
-    print(f"Email lido: {email}")
-    remover_arquivo(arquivo_email)
+usuario = ler_usuario(arquivo_usuario)
+if usuario:
+    print(f"Email lido: {usuario}")
+    remover_arquivo(arquivo_usuario)
 
     try:
         # Conecta ao banco de dados
@@ -83,7 +83,7 @@ if email:
             cursor = conn.cursor()
 
             # Tenta obter os dados do professor
-            dados_professor = obter_dados_professor(email, cursor)
+            dados_professor = obter_dados_professor(usuario, cursor)
             
             if dados_professor:
                 # Imprime os dados do professor
@@ -94,13 +94,13 @@ if email:
                 print(f'RA: {dados_professor["ra"]}')
             else:
                 # Tenta obter os dados do administrador
-                dados_administrador = obter_dados_administrador(email, cursor)
+                dados_administrador = obter_dados_administrador(usuario, cursor)
 
                 if dados_administrador:
                     print(f'Nome: {dados_administrador["nome"]}')
                     print(f'Cargo: {dados_administrador["cargo"]}')
                 else:
-                    print(f"Nenhum resultado encontrado para o email {email}")
+                    print(f"Nenhum resultado encontrado para o email {usuario}")
 
             cursor.close()
 
