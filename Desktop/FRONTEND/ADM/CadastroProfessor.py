@@ -3,7 +3,7 @@ from cryptography.fernet import Fernet
 import mysql.connector
 import random
 from hashlib import sha256
-comf = 0
+
 janela = ctk.CTk()
 
 class Application:
@@ -20,7 +20,7 @@ class Application:
 
     def tela(self):
         janela.geometry("700x450")
-        janela.title("Cadastro de Aluno")
+        janela.title("Cadastro de Professor")
         janela.resizable(False, False)
 
     def telaCadastroAluno(self):
@@ -39,192 +39,160 @@ class Application:
                                   font=('Roboto', 14))
         nome_entry.place(x=25, y=45)
 
-        usuario_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="usuario", width=300,
+        label_errorNV = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorNV.place(x=25, y=75)
+
+        usuario_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="E-mail", width=300,
                                    font=('Roboto', 14))
         usuario_entry.place(x=25, y=103)
+
+        label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorEV.place(x=25, y=133)
 
         curso_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Disciplina", width=300,
                                    font=('Roboto', 14))
         curso_entry.place(x=25, y=161)
 
+        label_errorCV = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorCV.place(x=25, y=191)
+
         CargH_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Carga Horária", width=145,
                                    font=('Roboto', 14))
         CargH_entry.place(x=25, y=219)
 
-        DiaS_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Quantidade de dias de trabalho por semana", width=145,
+        label_errorCHV = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorCHV.place(x=25, y=249)
+
+        DiaS_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Dias de Trabalho/semana", width=145,
                                   font=('Roboto', 14))
         DiaS_entry.place(x=180, y=219)
 
-        checkbox_var = ctk.BooleanVar()
-
-        def toggle_show_password():
-            valor = checkbox_var.get()
-            senha_entry.configure(show="" if valor else "*")
-
-        checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
-        checkbox.place(x=25, y=315)
+        label_errorCHMO = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorCHMO.place(x=180, y=249)
 
         senha_entry = ctk.CTkEntry(master=cadastro_frame, placeholder_text="Senha", width=300, font=('Roboto', 14), show="*")
         senha_entry.place(x=25, y=275)
 
-        global nome1, usuario, senha, Curso, RA, CargH, DiaS
+        label_errorSV = ctk.CTkLabel(master=cadastro_frame, text="", font=('Arial', 9), text_color='red')
+        label_errorSV.place(x=25, y=305)
 
-        def get_dados():
-            nome1 = nome_entry.get().strip()
-            usuario = usuario_entry.get().strip()
+        checkbox_var = ctk.BooleanVar()
+
+        def toggle_show_password():
+            senha_entry.configure(show="" if checkbox_var.get() else "*")
+
+        checkbox = ctk.CTkCheckBox(master=cadastro_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password)
+        checkbox.place(x=25, y=335)
+
+        # Função de validação otimizada
+        def validar_entradas():
+            nome = nome_entry.get().strip()
+            email = usuario_entry.get().strip()
+            curso = curso_entry.get().strip()
+            carga_horaria = CargH_entry.get().strip()
+            dias_semana = DiaS_entry.get().strip()
             senha = senha_entry.get().strip()
-            Curso = curso_entry.get().strip()
-            CargH = CargH_entry.get().strip()
-            DiaS = DiaS_entry.get().strip()
-            return nome1, usuario, senha, Curso, CargH, DiaS
 
-        def valida():
-            nome, usuario, senha1, Curso, CargH, DiaS = get_dados()
-            if not nome:
-                label_errorNV.place(x=25, y=74)
-                comf = 0
-            else:
-                label_errorNV.place(x=25, y=1007)
-                nomeC = nome.split()
-                contagem = len(nomeC)
-                if contagem < 2:
-                    label_errorSS.place(x=25, y=74)
-                    comf = 0
-                else:
-                    label_errorSS.place(x=25, y=1007)
-                    label_NAceito.place(x=25, y=74)
-                    if not usuario:
-                        label_EAceito.place(x=25, y=1300)
-                        label_errorEV.place(x=25, y=130)
-                        comf = 0
-                    else:
-                        label_errorEV.place(x=25, y=1620)
-                        if "@gmail.com" not in usuario:
-                            label_errorSAR.place(x=25, y=130)
-                            comf = 0
-                        else:
-                            label_errorSAR.place(x=25, y=1620)
-                            label_EAceito.place(x=25, y=130)
-                            if not Curso:
-                                label_errorCV.place(x=25, y=190)
-                                comf = 0
-                            else:
-                                label_errorCV.place(x=25, y=1620)
-                                if len(Curso) < 8:
-                                    label_errorCM8.place(x=25, y=190)
-                                    comf = 0
-                                else:
-                                    label_errorCM8.place(x=25, y=1620)
-                                    label_CAceito.place(x=25, y=190)
-                                    if not CargH:
-                                        label_errorCHV.place(x=25, y=246)
-                                        comf = 0
-                                    else:
-                                        label_errorCHV.place(x=25, y=1620)
-                                        if len(CargH) > 2:
-                                            label_errorCHMO.place(x=25, y=246)
-                                            comf = 0
-                                        else:
-                                            label_errorCHMO.place(x=25, y=1620)
-                                            label_CHAceito.place(x=25, y=246)
-                                            if not DiaS:
-                                                label_errorCHV.place(x=180, y=246)
-                                                comf = 0
-                                            else:
-                                                label_errorCHV.place(x=25, y=1620)
-                                                if len(DiaS) > 1:
-                                                    label_errorCHMO.place(x=180, y=246)
-                                                    comf = 0
-                                                else:
-                                                    label_errorCHMO.place(x=25, y=1620)
-                                                    label_CHAceito.place(x=25, y=246)
-                                                    if not senha1:
-                                                        label_errorSV.place(x=150, y=315)
-                                                        comf = 0
-                                                    else:
-                                                        label_errorSV.place(x=25, y=1620)
-                                                        if len(senha1) < 8:
-                                                            label_errorSM8.place(x=150, y=315)
-                                                            comf = 0
-                                                        else:
-                                                            label_errorSM8.place(x=25, y=1620)
-                                                            label_SAceito.place(x=150, y=315)
-                                                            comf = 1
-                                                            return comf
-            return comf
+            erros = {
+                'nome': "",
+                'email': "",
+                'curso': "",
+                'carga_horaria': "",
+                'senha': ""
+            }
 
-        def on_login_button_click(event):
-            valida()
-            nome, usuario, senha1, Curso, CargH, DiaS = get_dados()
-            comf = valida()
+            # Validações e mensagens de erro
+            if not nome or len(nome.split()) < 2:
+                erros['nome'] = "Nome incompleto"
+            if not email:
+                erros['email'] = "E-mail vazio"
+            elif "@gmail.com" not in email:
+                erros['email'] = "E-mail inválido"
+            if not curso:
+                erros['curso'] = "Disciplina vazia"
+            if not carga_horaria or not carga_horaria.isdigit() or len(carga_horaria) > 2:
+                erros['carga_horaria'] = "Carga horária inválida"
+            if not senha:
+                erros['senha'] = "Senha vazia"
+            elif len(senha) < 8:
+                erros['senha'] = "Senha curta (mín 8 caracteres)"
+
+            # Exibir mensagens de erro
+            label_errorNV.configure(text=erros['nome'])
+            label_errorEV.configure(text=erros['email'])
+            label_errorCV.configure(text=erros['curso'])
+            label_errorCHV.configure(text=erros['carga_horaria'])
+            label_errorSV.configure(text=erros['senha'])
+
+            return all(not msg for msg in erros.values())
+
+        # Função de cadastro no banco de dados
+        def cadastrar_professor():
+            if not validar_entradas():
+                return
+
+            nome = nome_entry.get().strip()
+            email = usuario_entry.get().strip()
+            curso = curso_entry.get().strip()
+            carga_horaria = CargH_entry.get().strip()
+            dias_semana = DiaS_entry.get().strip()
+            senha = senha_entry.get().strip()
+
+            senha_hash = sha256(senha.encode()).hexdigest()
             matricula = random.randint(10000, 99999)
-            if comf == 1:
-                senha = sha256(senha1.encode()).hexdigest()
-                def obter_informacoes_usuario():
-                    return {'nome': nome, 'Disciplina': Curso, 'CargaHoraria': CargH, 'diaSemana': DiaS, 'usuario': usuario, 'senha': senha, 'matricula': matricula}
 
-                def inserir_dados_mysql(dados):
-                    try:
-                        conexao = mysql.connector.connect(
-                            host="143.106.241.3",
-                            port=3306,
-                            user="cl201107",
-                            password="cl*02032005",
-                            database="cl201107"
-                        )
-                        cursor = conexao.cursor()
-                        sql = "SELECT senha FROM Minerva_Professor WHERE usuario = %s"
-                        cursor.execute(sql, (usuario,))
-                        result = cursor.fetchone()
-                        if result:
-                            label_errorJE.place(x=25, y=162)
-                        else:
-                            sql = "INSERT INTO Minerva_Professor (Nome, Disciplina, CargaHoraria, diaSemana, usuario, senha, matricula) VALUES (%(nome)s, %(Disciplina)s, %(CargaHoraria)s, %(diaSemana)s, %(usuario)s, %(senha)s, %(matricula)s)"
-                            cursor.execute(sql, dados)
-                            conexao.commit()
-                            print("Dados inseridos com sucesso!")
-                            janela.destroy()
-                    except mysql.connector.Error as erro:
-                        print(f"Erro ao inserir dados no banco de dados: {erro}")
-                        conexao.rollback()
-                    finally:
-                        cursor.close()
-                        conexao.close()
+            dados_usuario = {
+                'nome': nome,
+                'disciplina': curso,
+                'carga_horaria': carga_horaria,
+                'dias_semana': dias_semana,
+                'email': email,
+                'senha': senha_hash,
+                'matricula': matricula
+            }
 
-                informacoes = obter_informacoes_usuario()
-                inserir_dados_mysql(informacoes)
-                comf += 1
-            else:
-                print("incompleto")
+            try:
+                conexao = mysql.connector.connect(
+                    host="143.106.241.3",
+                    port=3306,
+                    user="cl201107",
+                    password="cl*02032005",
+                    database="cl201107"
+                )
+                cursor = conexao.cursor()
+                cursor.execute("SELECT senha FROM Minerva_Professor WHERE usuario = %s", (email,))
+                resultado = cursor.fetchone()
 
-        cadastro_button = ctk.CTkButton(master=cadastro_frame, text="Cadastro", width=300)
-        cadastro_button.place(x=25, y=350)
-        cadastro_button.bind("<Button-1>", on_login_button_click)
+                if resultado:
+                    label_errorEV.configure(text="E-mail já cadastrado")
+                else:
+                    # Inserir professor no banco de dados
+                    sql = """
+                        INSERT INTO Minerva_Professor 
+                        (Nome, Disciplina, CargaHoraria, diaSemana, usuario, senha, matricula)
+                        VALUES (%(nome)s, %(disciplina)s, %(carga_horaria)s, %(dias_semana)s, %(email)s, %(senha)s, %(matricula)s)
+                    """
+                    cursor.execute(sql, dados_usuario)
+                    conexao.commit()
 
-        global label_errorNV, label_errorSS, label_errorEV, label_errorSAR, label_errorJE
-        global label_errorCV, label_errorCM8, label_errorCHV, label_errorCHMO
-        global label_errorSV, label_errorSM8
-        global label_NAceito, label_EAceito, label_CAceito, label_SAceito, label_DAceito, label_CHAceito
+                    # Criar o login associado ao professor
+                    login_sql = """
+                        INSERT INTO Minerva_Login (professor_matricula_id, status)
+                        VALUES (%s, %s)
+                    """
+                    cursor.execute(login_sql, (matricula, 'ativo'))
+                    conexao.commit()
 
-        label_errorNV = ctk.CTkLabel(master=cadastro_frame, text="Nome vazio, coloque um nome válido", font=('Arial', 9), text_color='red')
-        label_errorSS = ctk.CTkLabel(master=cadastro_frame, text="Digite o sobrenome", font=('Arial', 9), text_color='red')
-        label_errorEV = ctk.CTkLabel(master=cadastro_frame, text="usuario vazio, coloque um usuario válido", font=('Arial', 9), text_color='red')
-        label_errorSAR = ctk.CTkLabel(master=cadastro_frame, text="usuario fora do padrão, use @gmail.com", font=('Arial', 9), text_color='red')
-        label_errorJE = ctk.CTkLabel(master=cadastro_frame, text="O usuario inserido já foi registrado", font=('Arial', 9), text_color='red')
+                    print("Cadastro realizado com sucesso!")
+                    
+                    janela.destroy()
+            except mysql.connector.Error as erro:
+                print(f"Erro ao inserir dados no banco de dados: {erro}")
+            finally:
+                cursor.close()
+                conexao.close()
 
-        label_errorCV = ctk.CTkLabel(master=cadastro_frame, text="Curso vazio, coloque um Curso válido", font=('Arial', 9), text_color='red')
-        label_errorCM8 = ctk.CTkLabel(master=cadastro_frame, text="Coloque uma Curso maior", font=('Arial', 9), text_color='red')
-        label_errorCHV = ctk.CTkLabel(master=cadastro_frame, text="vazia, inválida", font=('Arial', 9), text_color='red')
-        label_errorCHMO = ctk.CTkLabel(master=cadastro_frame, text="Quantidade de caracter inválida", font=('Arial', 9), text_color='red')
-
-        label_errorSV = ctk.CTkLabel(master=cadastro_frame, text="Senha vazia, coloque uma senha válida", font=('Arial', 9), text_color='red')
-        label_errorSM8 = ctk.CTkLabel(master=cadastro_frame, text="Senha pequena, menor que 8 caracteres", font=('Arial', 9), text_color='red')
-
-        label_NAceito = ctk.CTkLabel(master=cadastro_frame, text="Nome aceito", font=('Arial', 9), text_color='green')
-        label_EAceito = ctk.CTkLabel(master=cadastro_frame, text="usuario aceito", font=('Arial', 9), text_color='green')
-        label_CAceito = ctk.CTkLabel(master=cadastro_frame, text="Curso aceito", font=('Arial', 9), text_color='green')
-        label_CHAceito = ctk.CTkLabel(master=cadastro_frame, text="dias aceito", font=('Arial', 9), text_color='green')
-        label_SAceito = ctk.CTkLabel(master=cadastro_frame, text="Senha aceita", font=('Arial', 9), text_color='green')
-        label_DAceito = ctk.CTkLabel(master=cadastro_frame, text="Carga horária aceita", font=('Arial', 9), text_color='green')
+        cadastro_button = ctk.CTkButton(master=cadastro_frame, text="Cadastrar", width=300, command=cadastrar_professor)
+        cadastro_button.place(x=25, y=365)
 
 Application()

@@ -52,9 +52,21 @@ class Application:
 
         ctk.CTkCheckBox(master=login_frame, text="Mostrar senha", variable=checkbox_var, command=toggle_show_password).place(x=25, y=200)
 
+        global label_error
+        label_error = ctk.CTkLabel(master=login_frame, text="", font=('Arial', 9, 'bold'), text_color='red')
+
+        def mostrar_erro(msg):
+            label_error.configure(text=msg)
+            label_error.pack()
+            label_error.place(x=25, y=165)
+
         def on_login_button_click(event):
             senha = sha256(senha_entry.get().encode()).hexdigest()
-            usuario = usuario_entry.get()
+            usuario = usuario_entry.get().strip()
+
+            if not usuario or not senha:
+                mostrar_erro("Email e senha são obrigatórios.")
+                return
 
             def check_usuario_and_password(usuario, password):
                 try:
@@ -73,16 +85,13 @@ class Application:
 
                     if result:
                         if password == result[0]:
-                            minha_variavel = usuario_entry.get().strip()
-
                             with open('usuario.txt', 'w') as file:
-                                file.write(minha_variavel)
+                                file.write(usuario)
                             self.janela.quit()
                             self.janela.destroy()
-                           
                             os.system('Desktop\FRONTEND\ADM\home.py')
                         else:
-                            mostrar_erro_senha()
+                            mostrar_erro("Senha inválida.")
                     else:
                         sql2 = "SELECT senha FROM Minerva_Administrador WHERE usuario = %s"
                         cursor.execute(sql2, (usuario,))
@@ -90,15 +99,11 @@ class Application:
 
                         if result:
                             if password == result[0]:
-                                print(f"usuario '{usuario}' encontrado e a senha está correta.")
+                                print(f"Usuário '{usuario}' encontrado e a senha está correta.")
                             else:
-                                label_error_usuario.place(x=25, y=1005)
-                                mostrar_erro_senha()
-                                
+                                mostrar_erro("Senha inválida.")
                         else:
-                            label_error_senha.place(x=25, y=1650)
-                            mostrar_erro_usuario()
-                            
+                            mostrar_erro("Email inválido.")
 
                 except mysql.connector.Error as error:
                     print(f"Erro ao conectar ou executar consulta: {error}")
@@ -108,29 +113,12 @@ class Application:
                     if 'conn' in locals() and conn.is_connected():
                         conn.close()
 
-            def mostrar_erro_usuario():
-                label_error_usuario.pack()
-                label_error_usuario.place(x=25, y=105)
-
-            def mostrar_erro_senha():
-                label_error_senha.pack()
-                label_error_senha.place(x=25, y=165)
-
-            label_error_usuario.pack_forget()
-            label_error_senha.pack_forget()
+            label_error.pack_forget()
             check_usuario_and_password(usuario, senha)
 
         login_button = ctk.CTkButton(master=login_frame, text="LOGIN", width=300)
         login_button.place(x=25, y=235)
         login_button.bind("<Button-1>", on_login_button_click)
-        
-        global label_error_senha
-        label_error_senha = ctk.CTkLabel(master=login_frame, text="Senha inválida", font=('Arial', 9, 'bold'),
-                                         text_color='red')
-
-        global label_error_usuario
-        label_error_usuario = ctk.CTkLabel(master=login_frame, text="Email inválido", font=('Arial', 9, 'bold'),
-                                         text_color='red')
 
         esqueci_senha_button = ctk.CTkButton(master=login_frame, text="Esqueci minha senha", width=300, command=self.telaEsqueciSenha)
         esqueci_senha_button.place(x=25, y=280)
@@ -169,6 +157,7 @@ class Application:
             result = cursor.fetchone()
 
             if result:
+                self.usuario_verificado = usuario  # Armazenar o email verificado
                 self.enviar_usuario(usuario, codigo)
                 self.tela_codigo_verificacao(codigo)
             else:
@@ -216,34 +205,35 @@ class Application:
         self.codigo_entry = ctk.CTkEntry(master=self.codigo_verificacao_toplevel, placeholder_text="Código", width=300, font=('Roboto', 14))
         self.codigo_entry.pack(pady=10)
 
-        verificar_codigo_button = ctk.CTkButton(master=self.codigo_verificacao_toplevel, text="Verificar código", command=lambda: self.verificar_codigo(codigo_gerado))
+        verificar_codigo_button = ctk.CTkButton(master=self.codigo_verificacao_toplevel, text="Verificar", command=lambda: self.verificar_codigo(codigo_gerado))
         verificar_codigo_button.pack(pady=10)
 
     def verificar_codigo(self, codigo_gerado):
-        codigo_digitado = self.codigo_entry.get()
-        if int(codigo_digitado) == codigo_gerado:
+        codigo_digitado = self.codigo_entry.get().strip()
+
+        if str(codigo_gerado) == codigo_digitado:
             self.tela_alterar_senha()
         else:
-            label_erro_codigo = ctk.CTkLabel(master=self.codigo_verificacao_toplevel, text="Código inválido", font=('Arial', 9, 'bold'), text_color='red')
-            label_erro_codigo.pack(pady=5)
+            mostrar_erro_codigo("Código incorreto.")
 
     def tela_alterar_senha(self):
         self.alterar_senha_toplevel = tk.Toplevel(self.janela)
-        self.alterar_senha_toplevel.geometry("450x200")
+        self.alterar_senha_toplevel.geometry("450x250")
         self.alterar_senha_toplevel.title("Alterar Senha")
         self.alterar_senha_toplevel.configure(bg="#2b2b2b")
 
-        ctk.CTkLabel(master=self.alterar_senha_toplevel, text="Digite sua nova senha:", font=('Roboto', 14)).pack(pady=20)
+        ctk.CTkLabel(master=self.alterar_senha_toplevel, text="Digite sua nova senha:",
+                     font=('Roboto', 14)).pack(pady=20)
 
-        self.nova_senha_entry = ctk.CTkEntry(master=self.alterar_senha_toplevel, placeholder_text="Nova Senha", width=300, font=('Roboto', 14), show="*")
+        self.nova_senha_entry = ctk.CTkEntry(master=self.alterar_senha_toplevel, placeholder_text="Nova senha", width=300, font=('Roboto', 14), show="*")
         self.nova_senha_entry.pack(pady=10)
 
-        alterar_senha_button = ctk.CTkButton(master=self.alterar_senha_toplevel, text="Alterar Senha", command=self.alterar_senha)
+        alterar_senha_button = ctk.CTkButton(master=self.alterar_senha_toplevel, text="Alterar senha", command=self.alterar_senha)
         alterar_senha_button.pack(pady=10)
 
     def alterar_senha(self):
         nova_senha = sha256(self.nova_senha_entry.get().encode()).hexdigest()
-        usuario = self.usuario_recuperacao_entry.get()
+        usuario = self.usuario_verificado  # Usar o email verificado
 
         try:
             conn = mysql.connector.connect(
@@ -261,12 +251,12 @@ class Application:
 
             label_sucesso = ctk.CTkLabel(master=self.alterar_senha_toplevel, text="Senha alterada com sucesso", font=('Arial', 9, 'bold'), text_color='green')
             label_sucesso.pack(pady=5)
+
+            # Fechar todas as janelas relacionadas à redefinição de senha
             self.alterar_senha_toplevel.destroy()
             self.codigo_verificacao_toplevel.destroy()
             self.esqueci_senha_toplevel.destroy()
-            
-            
-            
+
         except mysql.connector.Error as error:
             print(f"Erro ao conectar ou executar consulta: {error}")
         finally:
@@ -275,4 +265,6 @@ class Application:
             if 'conn' in locals() and conn.is_connected():
                 conn.close()
 
-Application()
+# Inicializando a aplicação
+if __name__ == "__main__":
+    Application()
