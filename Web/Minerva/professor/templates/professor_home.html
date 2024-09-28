@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
     <head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +18,8 @@
         <header>
             <div id="menu">
                 <figure>
-                    <img id="toggleNav" src="{% static 'images/livro.png' %}" href="{% url 'professor_home' %}" alt="Minha Figura" width="55" height="55">
-                    <a href="{% url 'professor_home' %}" id="professor_titulo">MINERVA</a>
+                    <img id="toggleNav" src="{% static 'images/livro.png' %}" href="{% url 'professor_home' matricula=matricula %}" alt="Minha Figura" width="55" height="55">
+                    <a href="{% url 'professor_home' matricula=matricula %}" id="professor_titulo">MINERVA</a>
                     <img src="{% static 'images/perfil.png' %}" alt="Minha Mais" width="55" height="55" align="right">
                     <img src="{% static 'images/mais.png' %}" alt="Minha Mais" width="55" height="55" align="right">
                 </figure>
@@ -36,7 +36,7 @@
                     <ul class="nav flex-column" >
                         <li class="nav-item">
                             <div id="professor_muda_cor">
-                                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' %}" id="professor_inicio">  
+                                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' matricula=matricula %}" id="professor_inicio">  
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
                                         <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                                     </svg>
@@ -67,7 +67,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">Geografia</a></li>
                                     <li><a class="dropdown-item" href="#">Historia</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'ProjetoIntegrador_4DSN' %}">Projeto integrador</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula%}">Projeto integrador</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#">Separated link</a></li>
                                 </ul>
@@ -104,20 +104,20 @@
         {% comment %} SALAS DE AULA {% endcomment %}
         <section>
             <header>
-                <div class="container"> 
+                <div class="professor_atividades"> 
 
                     <div class="child">
-                        <a href="{% url 'ProjetoIntegrador_4DSN' %}" id="nomeSala">Projeto Integrador</a>
+                        <a href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula%}" id="nomeSala">Projeto Integrador - 4DSN</a>
                         <img src="{% static 'images/pilar.png' %}" id="imagem"alt="Minha Coluna" width="50" height="150">
                     </div>
 
                     <div class="child">
-                        <a href="#" id="nomeSala">Matemática</a>
+                        <a href="#" id="nomeSala">Projeto integrador - 2DSCT</a>
                         <img src="{% static 'images/pilar.png' %}" id="imagem"alt="Minha Coluna" width="50" height="150">
                     </div>
 
                     <div class="child">
-                        <a href="#" id="nomeSala">História</a>
+                        <a href="#" id="nomeSala">DAW I - 3DSN</a>
                         <img src="{% static 'images/pilar.png' %}" id="imagem"alt="Minha Coluna" width="50" height="150">
                     </div>
 
@@ -127,12 +127,12 @@
                     </div>
 
                     <div class="child">
-                        <a href="#" id="nomeSala">DAW II</a>
+                        <a href="#" id="nomeSala">DAW II - 4DSN</a>
                         <img src="{% static 'images/pilar.png' %}" id="imagem"alt="Minha Coluna" width="50" height="150">
                     </div>
 
                     <div class="child">
-                        <a href="#" id="nomeSala">Tópicos</a>
+                        <a href="#" id="nomeSala">Tópicos - 4DSN</a>
                         <img src="{% static 'images/pilar.png' %}" id="imagem"alt="Minha Coluna" width="50" height="150">
                     </div> 
                     

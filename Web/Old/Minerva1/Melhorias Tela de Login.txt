@@ -1,0 +1,7 @@
+Melhorias Tela de Login:
+
+* Mensagens de Erro
+* Lógica de professor ( dependendo do professor, ele tem que mostrar uma tela)
+	Creio que isso tem como ajustar conforme o base.html que permite criar um	modelo genérico de HTML e dentro da tela de inicio fazermos a lógica.
+OBS.: vou fazer primeiro a tela inicial e em seguida eu vejo como ficaria com essa ideia, pegando de inspiração algumas vídeo aulas que vi referente ao Django.
+ESSA PARTE SE ENCAIXA NO BACK

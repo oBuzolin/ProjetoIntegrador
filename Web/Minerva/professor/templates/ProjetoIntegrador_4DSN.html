@@ -20,10 +20,10 @@
         <header>
             <div id="menu">
                 <figure>
-                    <img id="toggleNav" src="{% static 'images/livro.png' %}" href="{% url 'professor_home' %}" alt="Minha Figura" width="55" height="55">
-                    <a href="{% url 'professor_home' %}" id="professor_titulo">MINERVA</a>
+                    <img id="toggleNav" src="{% static 'images/livro.png' %}" href="{% url 'professor_home' matricula=matricula %}" alt="Minha Figura" width="55" height="55">
+                    <a href="{% url 'professor_home' matricula=matricula %}" id="professor_titulo">MINERVA</a>
                     <i class="bi bi-chevron-right"></i>
-                    <a id="professor_titulo" href="{% url 'ProjetoIntegrador_4DSN' %}">ProjInt_4DSN</a>
+                    <a id="professor_titulo" href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula %}">ProjInt_4DSN</a>
                     <img src="{% static 'images/perfil.png' %}" alt="Minha Mais" width="55" height="55" align="right">
                     <img src="{% static 'images/mais.png' %}" alt="Minha Mais" width="55" height="55" align="right">
                 </figure>
@@ -40,7 +40,7 @@
                     <ul class="nav flex-column" >
                         <li class="nav-item">
                             <div id="professor_muda_cor">
-                                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' %}" id="professor_inicio">  
+                                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' matricula=matricula%}" id="professor_inicio">  
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
                                         <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                                     </svg>
@@ -108,9 +108,9 @@
         {% comment %} MENU SALA DE AULA {% endcomment %}
         <section>
             <div class="menu_sala">
-                <a id="menu_abas" class="active" href="{% url 'ProjetoIntegrador_4DSN' %}">Mural</a>
-                <a>Atividades</a>
-                <a>Semi-Deuses</a>
+                <a id="menu_abas_ativado" href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula%}">Mural</a>
+                <a id="menu_abas" href="{% url 'ProjInt_4DSN_Atividades' %}">Atividades</a>
+                <a id="menu_abas" href="{% url 'ProjInt_4DSN_Alunos' %}">Semi-Deuses</a>
             </div>
         </section>      
 
@@ -128,14 +128,22 @@
                 <div class="chatContainer">
                     <div class="mensagemInput">
                         <div id="quill-editor" class="quill-editor"></div>
-                        <button id="send-btn">Enviar</button>
                     </div>
-                    <div class="mensagem">
+                    
+                    <button id="send-btn">Postar</button>
+
+                    {% comment %} <div class="mensagem">
                         <!-- A mensagem será adicionada aqui -->
-                    </div>
+                    </div> {% endcomment %}
                 </div>
+            </div>
+
     
         </section>
+
+
+
+        
     
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <script>
@@ -158,13 +166,13 @@
                 ['blockquote', 'code-block'],
                 ['link', 'image', 'video', 'formula'],
               
-                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
                 [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
                 [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
                 [{ 'direction': 'rtl' }],                         // text direction
               
-                [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
               
                 [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
@@ -178,12 +186,30 @@
 
         document.getElementById('send-btn').addEventListener('click', function() {
             const messageHtml = quill.root.innerHTML;
+            const salaId = 1; // Defina o ID da sala apropriado
+        
             if (messageHtml.trim() !== '<p><br></p>') { // Verifica se a mensagem não está vazia
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'chat-bubble';
-                messageDiv.innerHTML = messageHtml; // Use innerHTML para preservar formatação
-                document.querySelector('.mensagem').appendChild(messageDiv);
-                quill.root.innerHTML = ''; // Limpa o editor após enviar a mensagem
+                fetch("{% url 'enviar_mensagem' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: new URLSearchParams({
+                        'sala_id': salaId,
+                        'mensagem': messageHtml
+                    })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          const messageDiv = document.createElement('div');
+                          messageDiv.className = 'chat-bubble';
+                          messageDiv.innerHTML = messageHtml;
+                          document.querySelector('.mensagem').appendChild(messageDiv);
+                          quill.root.innerHTML = '';
+                      }
+                  }).catch(error => console.error('Error:', error));
+                
             }
         });
         </script>

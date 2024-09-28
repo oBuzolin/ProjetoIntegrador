@@ -1,0 +1,306 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(233, 224, 224);
+    color: black;
+    width: 100%;
+    z-index: 1000;
+    text-align: left;
+    font-style: initial;
+    font-size: 50px;
+    border: 1px solid black;
+}
+
+#professor_titulo {
+    color: black;
+    text-decoration: none;
+}
+
+#nav {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    max-width: 300px;
+    max-height: 1100px;
+    height: 100%;
+    background-color: #F5F5F5;
+    border: 1px solid black;
+    font-style: inherit;
+    font-size: 25px;
+    box-sizing: border-box;
+}
+#professor_inicio,
+#professor_agenda,
+#professor_turmas,
+#professor_turma_arquivada,
+#professor_configuracao {
+    color: #000000;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px 10px; /* Ajuste o padding conforme necessário */
+}
+#professor_muda_cor:hover {
+    background-color: #DCDCDC; /* Muda a cor de fundo */
+    color: white; /* Muda a cor do texto */
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.linha-horizontal {
+    width: 100%;
+    background-color: black;
+    border: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+.hidden .nav-link span {
+    display: none;
+}
+/* #nav, .container {
+    width: 40%;
+    height: 760px;
+} */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Ajustado para distribuição uniforme */
+    align-items: center; 
+
+    margin-top: 100px;
+    margin-bottom: 10px;
+    margin-right: 100px;
+    margin-left: 0;
+    width: 100%;
+    padding: 0; 
+}
+.child {
+    border-radius: 50px;
+    margin-left: 3%;
+    margin-bottom: 2%;
+    width: 100%;
+    height: 150px;
+    background-color: #f4f2f0;
+    border: 2px solid black;
+    display: flex;
+    align-items: left; /* Alinha os itens ao centro verticalmente */
+    position: static;
+
+}
+#nomeSala{
+    font-size: 40px;
+    text-decoration: none;
+    color: black;
+    padding-left: 30px;
+    padding-top: 30px;
+    flex: 1;
+}
+#imagem {
+    margin-left: 5px; /* Remove a margem à esquerda */
+    margin-right: 100px; /* Empurra a imagem o máximo possível para a direita */
+    height: auto; /* Mantém a proporção da imagem */
+    max-height: 100%; /* Garante que a imagem não ultrapasse a altura do container */
+}
+
+
+/* .child a {
+    text-decoration: none;
+} */
+
+/* -----------------------------------------------------PARTE DO CSS DA SALAS DE AULA------------------------------------------------------------------ */
+
+.menu_sala{
+    margin-top: 70px;
+    margin-left: 280px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 0.5px solid black;
+}
+#menu_abas{
+    font-size: 30px;
+    padding-left: 5px;
+    color: black;
+    margin-right: 15px;
+}
+#menu_abas_ativado{
+    font-size: 30px;
+    padding-left: 5px;
+    margin-right: 15px;
+    color: #00008B;
+    text-decoration: none;  
+}
+/* #menu_abas:hover {
+    color: #00008B; /* Muda a cor do texto 
+} */
+
+.child_sala{
+    border-radius: 50px;
+    margin-left: 290px;
+    margin-bottom: 2%;
+    width: 80%;
+    height: 150px;
+    background-color: #f4f2f0;
+    border: 2px solid black;
+    display: flex;
+    align-items: flex-end; /* Alinha os itens ao centro verticalmente */
+    position: static;
+}
+
+.quill-editor {
+    border-radius: 15px; /* Torna as bordas arredondadas */
+    border: 1px solid #ccc; /* Adiciona uma borda leve */
+    padding: 10px; /* Adiciona espaçamento interno */
+    background-color: #fff; /* Cor de fundo branca */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+}
+/* Personalize a barra de ferramentas se necessário */
+.ql-toolbar {
+    border-radius: 15px 15px 0 0; /* Arredonda as bordas superiores */
+    border-bottom: 1px solid #ccc;
+}
+.chatContainer{
+    width: 85%;
+    margin-left: 180px;
+    flex-direction: row;
+}
+.menssagemInput{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px; */
+    border-top: 1px solid bisque;
+    background-color: #f9f9f9;
+}
+.mensagem{
+    flex: 1;
+    padding: 15px;
+    margin-top: 100px;
+    overflow-y: auto;
+    border-bottom: 1px solid bisque;
+}
+#send-btn{
+    padding: 10px 20px;
+    margin-top: 30px;
+    border: none;
+    border-radius: 50px;
+    margin-left: 250px;
+    width: 50%;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+#send-btn:hover{
+    background-color: #adffff;
+    color: #000000;
+}
+/* textarea{
+    flex: 1;
+    padding: 10px;
+    border-radius: 4px;
+    border-top: 1px solid bisque;
+    resize: none;
+    font-size: 16px;
+} */
+/* .quill-editor {
+    height: 100px;
+    /* margin-bottom: 10px;
+}   */
+/*
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid beige;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+
+/* -----------------------------------------------------PARTE DO CSS DAS ATIVIDADES------------------------------------------------------------------ */
+
+/* .div_atividade_redondo{
+    border: 2px solid black;
+    border-radius: 70%;
+    margin-left: 290px;
+    margin-bottom: 2%;
+    width: 10%;
+    height: 150px;
+}
+.div_atividade_retantulo{
+    border: 2px solid black;
+    border-radius: 100%;
+    margin-left: 290px;
+    margin-bottom: 2%;
+    width: 10%;
+    height: 150px; 
+}*/
+
+.atividade {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 70px;
+    /* padding: 20px 30px; */
+    max-width: 600px;
+    height: 150px;
+    margin-left: 300px;
+    padding-left: -1px;
+    
+  }
+  
+.circulo {
+    width: 150px; /* Mesma altura do container */
+    height: 150px; /* Mesma altura do container */
+    border: 3px solid black;
+    border-radius: 50%; /* 50% para garantir que fique perfeitamente redondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 36px;
+    position: relative; /* Permite posicionar elementos filhos absolutamente */
+} 
+.retangulo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Garante que o conteúdo esteja alinhado ao final */
+    height: 100%; /* Certifica-se de que o contêiner ocupe toda a altura disponível */
+    padding-left: 20px;
+}
+#atividade_nome{
+    color: black;
+    text-decoration: none;
+}
+
+.icon {
+    display: flex;
+    align-items: flex-start; /* Alinha o ícone ao topo do contêiner */
+    justify-content: flex-start;
+    margin-bottom: auto; /* Empurra o ícone para cima */
+}
+
+.icon img {
+    margin-top: 10px; /* Ajuste fino para mover o ícone mais para cima */
+    width: 50px;
+    height: 50px;
+}
+.icon span {
+    margin-top: 10px; /* Ajuste fino para mover o ícone mais para cima */
+    width: 60px;
+    height: 60px;
+    font-weight: bold;
+    font-size: 18px;
+
+}

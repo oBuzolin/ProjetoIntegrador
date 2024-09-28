@@ -4,6 +4,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'users',
     'professor',
     'aluno',
+    'home',
 ]
 
 
@@ -45,6 +47,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_URL = '/accounts/login/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Usa o banco de dados para armazenar sessões
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_AGE = 1209600  # Tempo de vida do cookie em segundos (2 semanas)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 ROOT_URLCONF = 'setup.urls'
 
@@ -67,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'setup.wsgi.application'
 
 DATABASES = {
-    'default': {
+    'default':  {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'cl201107',  # Nome do seu banco de dados MySQL
         'USER': 'cl201107',  # Seu usuário do MySQL
@@ -108,6 +117,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+# LOGIN_URL = '/accounts/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -126,4 +136,13 @@ AUTHENTICATION_BACKENDS = [
     'app_usuario.backends.UsuarioBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+# EMAIL_BACKEND = 'utils.email_backends.MultipleSMTPBackend'
 
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'minervaembv@gmail.com'
+EMAIL_HOST_PASSWORD = 'a u z q y d f v a w a x m o h a'
+DEFAULT_FROM_EMAIL = 'minervaembv@gmail.com'
