@@ -87,39 +87,42 @@ class Application:
         # Função de validação otimizada
         def validar_entradas():
             nome = nome_entry.get().strip()
-            email = usuario_entry.get().strip()
+            usuario = usuario_entry.get().strip()
             curso = curso_entry.get().strip()
-            carga_horaria = CargH_entry.get().strip()
-            dias_semana = DiaS_entry.get().strip()
+            carga_horaria = int(CargH_entry.get().strip())
+            dias_semana = int(DiaS_entry.get().strip())
             senha = senha_entry.get().strip()
 
             erros = {
                 'nome': "",
-                'email': "",
+                'usuario': "",
                 'curso': "",
                 'carga_horaria': "",
-                'senha': ""
+                'senha': "",
+                'dias_semana': ""
             }
 
             # Validações e mensagens de erro
             if not nome or len(nome.split()) < 2:
                 erros['nome'] = "Nome incompleto"
-            if not email:
-                erros['email'] = "E-mail vazio"
-            elif "@gmail.com" not in email:
-                erros['email'] = "E-mail inválido"
+            if not usuario:
+                erros['usuario'] = "E-mail vazio"
+            elif "@gmail.com" not in usuario:
+                erros['usuario'] = "E-mail inválido"
             if not curso:
                 erros['curso'] = "Disciplina vazia"
-            if not carga_horaria or not carga_horaria.isdigit() or len(carga_horaria) > 2:
+            if not 0 < carga_horaria < 61:
                 erros['carga_horaria'] = "Carga horária inválida"
             if not senha:
                 erros['senha'] = "Senha vazia"
+            elif not 0< dias_semana < 8:
+                erros['senha'] = "Dias por semana invalido"
             elif len(senha) < 8:
                 erros['senha'] = "Senha curta (mín 8 caracteres)"
 
             # Exibir mensagens de erro
             label_errorNV.configure(text=erros['nome'])
-            label_errorEV.configure(text=erros['email'])
+            label_errorEV.configure(text=erros['usuario'])
             label_errorCV.configure(text=erros['curso'])
             label_errorCHV.configure(text=erros['carga_horaria'])
             label_errorSV.configure(text=erros['senha'])
@@ -132,7 +135,7 @@ class Application:
                 return
 
             nome = nome_entry.get().strip()
-            email = usuario_entry.get().strip()
+            usuario = usuario_entry.get().strip()
             curso = curso_entry.get().strip()
             carga_horaria = CargH_entry.get().strip()
             dias_semana = DiaS_entry.get().strip()
@@ -146,7 +149,7 @@ class Application:
                 'disciplina': curso,
                 'carga_horaria': carga_horaria,
                 'dias_semana': dias_semana,
-                'email': email,
+                'usuario': usuario,
                 'senha': senha_hash,
                 'matricula': matricula
             }
@@ -160,7 +163,7 @@ class Application:
                     database="cl201107"
                 )
                 cursor = conexao.cursor()
-                cursor.execute("SELECT senha FROM Minerva_Professor WHERE usuario = %s", (email,))
+                cursor.execute("SELECT senha FROM Minerva_Professor WHERE usuario = %s", (usuario,))
                 resultado = cursor.fetchone()
 
                 if resultado:
@@ -170,18 +173,18 @@ class Application:
                     sql = """
                         INSERT INTO Minerva_Professor 
                         (Nome, Disciplina, CargaHoraria, diaSemana, usuario, senha, matricula)
-                        VALUES (%(nome)s, %(disciplina)s, %(carga_horaria)s, %(dias_semana)s, %(email)s, %(senha)s, %(matricula)s)
+                        VALUES (%(nome)s, %(disciplina)s, %(carga_horaria)s, %(dias_semana)s, %(usuario)s, %(senha)s, %(matricula)s)
                     """
                     cursor.execute(sql, dados_usuario)
                     conexao.commit()
 
                     # Criar o login associado ao professor
-                    login_sql = """
-                        INSERT INTO Minerva_Login (professor_matricula_id, status)
-                        VALUES (%s, %s)
-                    """
-                    cursor.execute(login_sql, (matricula, 'ativo'))
-                    conexao.commit()
+                    # login_sql = """
+                    #     INSERT INTO Minerva_Login (professor_matricula_id, status)
+                    #     VALUES (%s, %s)
+                    # """
+                    # cursor.execute(login_sql, (matricula, 'ativo'))
+                    # conexao.commit()
 
                     print("Cadastro realizado com sucesso!")
                     
