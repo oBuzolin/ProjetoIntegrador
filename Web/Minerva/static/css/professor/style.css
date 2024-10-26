@@ -23,7 +23,7 @@ body {
     text-decoration: none;
 }
 .container{
-        width: 85%;
+    width: 85%;
     margin-left: 180px;
     flex-direction: row;
 }
@@ -155,7 +155,7 @@ body {
     margin-bottom: 2%;
     width: 80%;
     height: 150px;
-    background-color: #f4f2f0;
+    background-color: #FFD700;
     border: 2px solid black;
     display: flex;
     align-items: flex-end; /* Alinha os itens ao centro verticalmente */
@@ -307,3 +307,91 @@ body {
     font-size: 18px;
 
 }
+
+/* -----------------------------------------------------PARTE DO CSS DOS ALUNOS------------------------------------------------------------------ */
+/* Container principal */
+.alunos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Título principal */
+h2 {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* Seção de professores e alunos */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.add-button {
+    background-color: #3c8dbc;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #337ab7;
+}
+
+/* Lista de professores e alunos */
+.list-group {
+    width: 100%;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.profile-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Alinhamento centralizado para o conteúdo
+.text-center {
+    text-align: center;
+} */

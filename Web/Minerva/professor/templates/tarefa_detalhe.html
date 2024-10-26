@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tarefa.titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MINERVA &gt; MATEMÁTICA</h1>
+        </header>
+        <div class="content">
+            <div class="tarefa-header">
+                <div class="tarefa-titulo">
+                    <h2>DER</h2>
+                    <p>{{ tarefa.professora }} • {{ tarefa.data }}</p>
+                </div>
+                <div class="pontos">
+                    <p>{{ tarefa.pontos }} pontos</p>
+                </div>
+            </div>
+            <div class="tarefa-descricao">
+                <h3>Primeiro mapa conceitual</h3>
+                <p>{{ tarefa.descricao }}</p>
+            </div>
+        </div>
+        <footer>
+            <p>Comentários da turma</p>
+        </footer>
+    </div>
+</body>
+</html>

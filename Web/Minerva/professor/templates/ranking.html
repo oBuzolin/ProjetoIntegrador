@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Minerva Estudos - ProjInt_4DSN</title>
+    </head>
+    <body> 
+
+        <h1>Ranking da Turma: {{ turma.nome }}</h1>
+
+        <table>
+            <tr>
+                <th>Posição</th>
+                <th>Aluno</th>
+                <th>Média</th>
+            </tr>
+            {% for aluno in ranking_alunos %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ aluno.aluno__nome }}</td>
+                <td>{{ aluno.media_nota }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+</body>
+</html>
