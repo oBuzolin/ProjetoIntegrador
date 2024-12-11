@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{% static 'images/ico.png' %}">
+		<title>Minerva Estudos - Home</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %} 
+        <link rel="stylesheet" type="text/css" href="{% static 'css/home/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"> 
+    </head>
+    <body id="cor"> 
+            <div class="container" style="background-image: url('{% static 'images/ImagemNaturezaBR.jpg' %}');">
+                <h1 id="titulo">MINERVA ESTUDOS</h1>
+                <p id="subTitulo">Um ambiente escolar divertido, com temática mitologia que incentivará seus alunos.</p>
+                <div class="footer">
+                    <button type="button" class="btn btn-light" id="dados" onclick="window.location.href='{% url 'login' %}'">
+                        Clique aqui para acessar
+                    </button>
+                    {% comment %} <a id="AcessoLink" href="{% url 'login' %}">Clique aqui para acessar</a> {% endcomment %}
+                    <div class="footer-links">
+                        <button type="button" class="btn btn-light" id="dados">Sobre nós</button>
+                        {% comment %} <a id="dados" href="#">Sobre nós</a> {% endcomment %}
+                        <button type="button" class="btn btn-light dados" id="dados">Contato</button>
+                        {% comment %} <a id="dados" href="#">Contato</a> {% endcomment %}
+                    </div>
+                </div>
+
+    </body>
+</html>

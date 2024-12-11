@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{% static 'images/ico.png' %}">
+		<title>Minerva Estudos - ProjInt_4DSN</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %} 
+        <link rel="stylesheet" type="text/css" href="{% static 'css/professor/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+        {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> {% endcomment %}
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    </head>
+    <body> 
+        {% comment %} MENU {% endcomment %}
+        <header>
+            <div id="menu">
+                <figure>
+                    <img id="toggleNav" src="{% static 'images/livro.png' %}" href="{% url 'professor_home' matricula=matricula %}" alt="Minha Figura" width="55" height="55">
+                    <a href="{% url 'professor_home' matricula=matricula %}" id="professor_titulo">MINERVA</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <a id="professor_titulo" href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula %}">ProjInt_4DSN</a>
+                    <img src="{% static 'images/perfil.png' %}" alt="Minha Mais" width="55" height="55" align="right">
+                    <img src="{% static 'images/mais.png' %}" alt="Minha Mais" width="55" height="55" align="right">
+                </figure>
+            </div>
+            <hr>
+        </header>
+    
+        <div>
+            {% comment %} NAV {% endcomment %}
+            <nav>
+                <div id="nav" >
+                    <br>
+                    <br>
+                    <ul class="nav flex-column" >
+                        <li class="nav-item">
+                            <div id="professor_muda_cor">
+                                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' matricula=matricula%}" id="professor_inicio">  
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                                    </svg>
+                                    <span>Início</span>
+                                </a>
+                            </div>
+                        </li>
+    
+                        <hr class="linha-horizontal">
+    
+                        <li class="nav-item">
+                            <div id="professor_muda_cor">
+                                <a class="nav-link" href="#" id="professor_agenda">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                    </svg>
+                                    <span>Agenda</span>
+                                </a>
+                            </div>  
+                        </li>
+    
+                        <li class="nav-item dropdown">
+                            <div id="professor_muda_cor">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="professor_turmas">
+                                    <img width="20" height="20" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/external-class-science-education-dreamstale-lineal-dreamstale.png" alt="external-class-science-education-dreamstale-lineal-dreamstale"/>
+                                    <span>Turmas</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Geografia</a></li>
+                                    <li><a class="dropdown-item" href="#">Historia</a></li>
+                                    <li><a class="dropdown-item" href="#">Projeto integrador</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                </ul>
+                            </div>    
+                        </li>
+                        
+                        <li class="nav-item">
+                            <div id="professor_muda_cor">
+                                <a class="nav-link" href="#" id="professor_turma_arquivada">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                                        <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                                    </svg>
+                                    <span>Turmas Arquivadas</span>
+                                </a>
+                            </div>    
+                        </li>
+    
+                        <li class="nav-item">
+                            <div id="professor_muda_cor">
+                                <a class="nav-link" href="#" id="professor_configuracao">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+                                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+                                    </svg>
+                                    <span>Configurações</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>    
+        </div> 
+    
+        {% comment %} MENU SALA DE AULA {% endcomment %}
+        <section>
+            <div class="menu_sala">
+                <a id="menu_abas_ativado" href="{% url 'ProjetoIntegrador_4DSN' matricula=matricula%}">Mural</a>
+                <a id="menu_abas" href="{% url 'ProjInt_4DSN_Atividades' %}">Atividades</a>
+                <a id="menu_abas" href="{% url 'ProjInt_4DSN_Alunos' %}">Semi-Deuses</a>
+            </div>
+        </section>      
+
+        {% comment %} FACHADA DA SALA - NOME E TURMA + ICONE {% endcomment %}
+        <section>
+            <div class="child_sala">
+                <a id="nomeSala">Projeto Integrador - 4DSN </a>
+                <img src="{% static 'images/icone_salas.png' %}" id="imagem"alt="Minha Coluna" width="150" height="150">
+            </div>
+        </section>
+
+        {% comment %} MENSAGENS - LOCAL ONDE SERÁ POSSIVEL ESCREVER SUAS MENSAGENS PARA ENVIAR {% endcomment %}
+        <section>
+            <div class="chatContainer">
+                <div class="chatContainer">
+                    <div class="mensagemInput">
+                        <div id="quill-editor" class="quill-editor"></div>
+                    </div>
+                    
+                    <button id="send-btn">Postar</button>
+
+                    {% comment %} <div class="mensagem">
+                        <!-- A mensagem será adicionada aqui -->
+                    </div> {% endcomment %}
+                </div>
+            </div>
+
+    
+        </section>
+
+
+
+        
+    
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('toggleNav').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var navBar = document.getElementById('nav');
+                    navBar.classList.toggle('hidden');
+                });
+            });
+
+                
+             // Inicializa o editor Quill
+        var quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Digite sua mensagem aqui...',
+            modules: {
+                toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'video', 'formula'],
+              
+                // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                [{ 'direction': 'rtl' }],                         // text direction
+              
+                // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+              
+                ['clean']                                         // remove formatting button
+                ]
+            }
+        });
+
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const messageHtml = quill.root.innerHTML;
+            const salaId = 1; // Defina o ID da sala apropriado
+        
+            if (messageHtml.trim() !== '<p><br></p>') { // Verifica se a mensagem não está vazia
+                fetch("{% url 'enviar_mensagem' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: new URLSearchParams({
+                        'sala_id': salaId,
+                        'mensagem': messageHtml
+                    })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          const messageDiv = document.createElement('div');
+                          messageDiv.className = 'chat-bubble';
+                          messageDiv.innerHTML = messageHtml;
+                          document.querySelector('.mensagem').appendChild(messageDiv);
+                          quill.root.innerHTML = '';
+                      }
+                  }).catch(error => console.error('Error:', error));
+                
+            }
+        });
+        </script>
+    </body>
+    </html>

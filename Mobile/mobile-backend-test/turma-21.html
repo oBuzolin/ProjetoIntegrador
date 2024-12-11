@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turma 21</title>
+    <style>
+        /* Adicione seus estilos aqui */
+    </style>
+</head>
+
+<body>
+    <h1>Mural da Turma 1</h1>
+    <div id="mural"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Você precisa fazer login primeiro!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/turmas', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const turmas = await response.json();
+                    console.log('Turmas recebidas:', turmas); // Adicionar log para depuração
+                    const turma = turmas.find(t => t.id_turma === 21); // Ajuste para o ID da turma correspondente
+                    if (turma) {
+                        const muralDiv = document.getElementById('mural');
+                        if (turma.muralMensagens && turma.muralMensagens.length > 0) {
+                            turma.muralMensagens.forEach(mural => {
+                                const p = document.createElement('p');
+                                p.innerHTML = `<strong>${new Date(mural.data_publicacao).toLocaleString()}</strong>: ${mural.mensagem}`;
+                                muralDiv.appendChild(p);
+                            });
+                        } else {
+                            muralDiv.textContent = 'Sem mensagens no mural.';
+                        }
+                    } else {
+                        alert('Turma não encontrada.');
+                    }
+                } else {
+                    alert('Erro ao carregar as turmas.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao carregar as turmas.');
+            }
+        });
+    </script>
+</body>
+
+</html>

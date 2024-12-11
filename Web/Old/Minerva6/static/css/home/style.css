@@ -1,0 +1,57 @@
+#cor {
+    /* background-image: url("/mnt/data/Minerva Estudos (1).png"); Usando a imagem enviada */
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container{
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 60px;
+    border-radius: 10px;
+    border: white;
+    max-width: 400px;
+    width: 80%;
+    height: 70%;
+    position: relative;
+}
+#titulo{
+    text-align: left; /* Alinhar texto à esquerda */
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.5em;
+    color: #ECF0F1;
+    text-shadow: 2px 2px 5px black;
+}
+#subTitulo{
+    font-size: 1.2em;
+    color: #ECF0F1;
+    text-shadow: 2px 2px 5px black;
+}
+
+/* Configuração para o rodapé geral */
+.footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Divide os itens para esquerda e direita */
+    /* padding: 0 20px; Espaçamento nas laterais */
+}
+/* Posiciona os links no rodapé à direita */
+.footer-links {
+    position: absolute;
+    /* /* bottom: 20px; /* Posiciona na parte inferior  */
+    right: 20px;
+    display: flex;
+    gap: 15px;    /* Espaçamento entre os links */
+}
+#dados:hover{
+    color: #fceb39;
+    Font-weight: bold;
+}

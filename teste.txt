@@ -1,0 +1,28 @@
+# @login_required
+# def enviar_mensagem(request):
+#     if request.method == 'POST':
+#         sala_id = request.POST.get('sala_id')
+#         mensagem_texto = request.POST.get('mensagem')
+#         try:
+#             sala = SalaDeAula.objects.get(id=sala_id)
+#             mensagem = Mensagem.objects.create(
+#                 sala=sala,
+#                 usuario=request.user,
+#                 texto=mensagem_texto
+#             )
+#             return JsonResponse({'status': 'success', 'mensagem_id': mensagem.id})
+#         except SalaDeAula.DoesNotExist:
+#             return JsonResponse({'status': 'error', 'message': 'Sala de aula não encontrada'})
+#     return JsonResponse({'status': 'error', 'message': 'Método não permitido'})
+
+
+# class Mensagem(models.Model):
+#     sala = models.ForeignKey(SalaDeAula, on_delete=models.CASCADE, related_name="mensagens")
+#     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+#     texto = models.TextField()
+#     data_envio = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f'{self.usuario.username}: {self.texto[:100]}'
+
+# Create your models here. 

@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Minerva Estudo - Login</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/user/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+    <body class="body_login">
+        <div class="center">
+            <div class="login">
+                <div class="left">
+                    <h2 class="h2_login">Sistema de Login</h2>
+                    <h4 class="h4_login">Use aqui o login que recebeu em seu email!</h4>
+                </div>
+                <div class="right">
+                    <form method="post" class="needs-validation" id="loginForm" novalidate>
+                        {% csrf_token %}
+                        {% if messages %}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function(){
+                                    {% for message in messages %} 
+                                        {% if message.tags == 'error' %}
+
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Erro',
+                                                text: '{{ message }}',
+                                            });
+                                        {% endif %}
+                                    {% endfor %}
+                                });
+                            </script>
+                        {% endif %}
+
+                        <!-- Campo de E-mail -->
+                        <label for="usuario" class="form-label" style="color:white;"></label>
+                        <input type="email" name="usuario" class="form-control" id="validationCustom01" placeholder="Seu E-mail" required>
+                        <div class="invalid-feedback">
+                            Por favor, forneça um e-mail válido.
+                        </div>
+                        
+                        <!-- Campo de senha -->
+                        <label for="senha" class="form-label" style="color:white;"></label>
+                        <input type="password" name="senha" class="form-control" id="senha" placeholder="Sua senha" required>
+                        <div class="invalid-feedback">
+                            Por favor, forneça uma senha.
+                        </div>
+                        
+                        <!-- Campo de mostrar a senha -->
+                        <div class="form-check form-switch">
+                            <div class="checkbox-container">
+                                <input class="form-check-input" type="checkbox" role="switch" id="showPassword">
+                                <label class="form-check-label" for="showPassword">Mostrar Senha</label>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Link reset de senha -->
+                        <a class="reset" href="{% url 'reset' %}">Esqueci minha senha</a>
+
+                        <!-- Botões -->
+                        <div class="button-group">
+                                <br><input type="submit" value="Login" class="btn btn-success"></button>
+                                <br><button class="btn btn-danger"><i class="fa fa-google"></i> Conecte-se ao Google</button>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div> 
+        <script src="{% static 'javascript/user/users.js' %}"></script>
+        <script>
+            (function () {
+                'use strict';
+            
+                // Busca o formulário e impede o envio se não for válido
+                var form = document.getElementById('loginForm');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            })();
+        </script>
+            
+    </body>
+</html>
